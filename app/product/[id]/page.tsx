@@ -10,6 +10,7 @@ interface Props {
 
 export default async function ProductDetails({ params }: Props) {
   const { id } = await params;
+  console.log("prams id",id)
 const product =
   await prisma.product.findUnique({
     where: {
