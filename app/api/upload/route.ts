@@ -1,0 +1,35 @@
+import { writeFile } from "fs/promises";
+import path from "path";
+import { NextResponse } from "next/server";
+
+export async function POST(req: Request) {
+  const data = await req.formData();
+
+  const file = data.get("file") as File;
+
+  if (!file) {
+    return NextResponse.json(
+      { error: "No file" },
+      { status: 400 }
+    );
+  }
+
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  const uploadDir = path.join(
+    process.cwd(),
+    "public/uploads"
+  );
+
+  const filePath = path.join(
+    uploadDir,
+    file.name
+  );
+
+  await writeFile(filePath, buffer);
+
+  return NextResponse.json({
+    imageUrl: `/uploads/${file.name}`,
+  });
+}
