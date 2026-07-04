@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import OfferBar from "@/components/common/OfferBar";
+import StoreHeader from "@/components/common/StoreHeader";
+import NavBar from "@/components/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,15 +32,17 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-col bg-slate-50">
-        <Header />
+      <body className=" flex flex-col bg-slate-50">
+        <StoreHeader />
+        <NavBar/>
+        {/* <Header /> */}
    <OfferBar />
 
         <main className="flex-1">
           {children}
         </main>
 
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
