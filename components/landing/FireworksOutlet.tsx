@@ -29,12 +29,12 @@ const FireworksOutlet: React.FC = () => {
             We are selling branded fireworks products to our valuable
             customers in all working days with reasonable rates.
           </p>
-          <Link
+          {/* <Link
             href="/quick-order"
             className="mt-4 inline-block text-sm font-semibold text-blue-600 hover:underline"
           >
             Request a quote
-          </Link>
+          </Link> */}
         </AnimatedReveal>
 
         {/* Right: product images */}

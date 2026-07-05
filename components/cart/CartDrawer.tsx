@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { X, Minus, Plus, ArrowLeft } from "lucide-react";
+import { X, Minus, Plus, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useCart } from "./CartContext";
 
 /**
@@ -10,10 +10,6 @@ import { useCart } from "./CartContext";
  * Slide-in panel from the right with a two-step flow:
  *   Step 1 "review"  -> cart items with quantity steppers + estimate total
  *   Step 2 "details" -> customer details form + order summary + submit
- *
- * Design intentionally avoids a solid loud background color and a giant
- * red circular close icon — uses a neutral white panel, subtle shadow,
- * and a small ghost-style close button for a more professional look.
  */
 
 const MINIMUM_ORDER = 2000;
@@ -21,92 +17,150 @@ const STATES = ["Tamil Nadu", "Kerala", "Karnataka", "Andhra Pradesh", "Telangan
 
 type Step = "review" | "details";
 
-const WHATSAPP_NUMBER = "+917867060105";
+type FormState = {
+  name: string;
+  mobile: string;
+  email: string;
+  state: string;
+  city: string;
+  address: string;
+};
+
+type FormErrors = Partial<Record<keyof FormState, string>>;
+
+const emptyForm = (): FormState => ({
+  name: "",
+  mobile: "",
+  email: "",
+  state: STATES[0],
+  city: "",
+  address: "",
+});
 
 const CartDrawer: React.FC = () => {
   const { items, isOpen, closeCart, updateQuantity, removeItem, clearCart, subtotal } =
     useCart();
   const [step, setStep] = useState<Step>("review");
-  const [form, setForm] = useState({
-    name: "",
-    mobile: "",
-    email: "",
-    state: STATES[0],
-    city: "",
-    address: "",
-  });
+  const [form, setForm] = useState<FormState>(emptyForm);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   if (!isOpen) return null;
 
-  const discountTotal = 0; // wire up real discount logic when available
+  const discountTotal = 0;
   const packingChargePercent = 0;
-  const packingCharge = (subtotal * packingChargePercent) / 100;
-  const overallTotal = subtotal - discountTotal + packingCharge;
+  const packingCharge = Number(((subtotal * packingChargePercent) / 100).toFixed(2));
+  const netRate = subtotal - discountTotal;
+  const overallTotal = netRate + packingCharge;
   const belowMinimum = overallTotal < MINIMUM_ORDER && items.length > 0;
 
-  const handleClose = () => {
+  const resetFlow = () => {
     setStep("review");
+    setErrors({});
+    setSubmissionError(null);
+    setIsSubmitting(false);
+    setShowSuccess(false);
+  };
+
+  const handleClose = () => {
+    resetFlow();
     closeCart();
   };
 
-  const buildWhatsAppMessage = () => {
-    const itemLines = items
-      .map(
-        (item, idx) =>
-          `${idx + 1}. ${item.name} x ${item.quantity} - ₹${(
-            item.price * item.quantity
-          ).toLocaleString("en-IN")}`
-      )
-      .join("\n");
+  const validateForm = () => {
+    const nextErrors: FormErrors = {};
 
-    return [
-      "*New Order Estimate - Crackers Win Crackers*",
-      "",
-      "*Items:*",
-      itemLines,
-      "",
-      `*Overall Total:* ₹${overallTotal.toLocaleString("en-IN")}`,
-      "",
-      "*Customer Details:*",
-      `Name: ${form.name}`,
-      `Mobile: ${form.mobile}`,
-      `Email: ${form.email}`,
-      `State: ${form.state}`,
-      `City: ${form.city}`,
-      `Address: ${form.address}`,
-    ].join("\n");
+    if (!form.name.trim()) nextErrors.name = "Name is required";
+
+    const mobile = form.mobile.trim();
+    if (!mobile) nextErrors.mobile = "Mobile number is required";
+    else if (!/^\d{10}$/.test(mobile)) {
+      nextErrors.mobile = "Enter a valid 10-digit mobile number";
+    }
+
+    const email = form.email.trim();
+    if (!email) nextErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      nextErrors.email = "Enter a valid email address";
+    }
+
+    if (!form.state.trim()) nextErrors.state = "State is required";
+    if (!form.city.trim()) nextErrors.city = "City is required";
+    if (!form.address.trim()) nextErrors.address = "Address is required";
+
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    const message = buildWhatsAppMessage();
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-      message
-    )}`;
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
 
-    window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    setIsSubmitting(true);
+    setSubmissionError(null);
 
-    clearCart();
-    setForm({ name: "", mobile: "", email: "", state: STATES[0], city: "", address: "" });
-    handleClose();
+    const payload = {
+      orderNo: `ORD-${Date.now()}`,
+      customer: form.name.trim(),
+      phone: form.mobile.trim(),
+      email: form.email.trim(),
+      state: form.state,
+      city: form.city.trim(),
+      address: form.address.trim(),
+      total: overallTotal,
+      subtotal,
+      items: items.map((item) => ({
+        name: item.name,
+        qty: item.quantity,
+        price: item.price,
+      })),
+    };
+
+    try {
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_ORDER_API_URL || "http://localhost:3000/api/orders",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.message || "Unable to place your order right now.");
+      }
+
+      clearCart();
+      setForm(emptyForm());
+      setErrors({});
+      setShowSuccess(true);
+    } catch (error) {
+      setSubmissionError(
+        error instanceof Error ? error.message : "Unable to place your order right now."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"
         onClick={handleClose}
       />
 
-      {/* Panel */}
       <div className="relative flex h-full w-full max-w-md flex-col bg-white shadow-2xl">
-        {/* Header */}
         <div className="flex items-start justify-between border-b border-gray-100 px-6 py-5">
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Crackers Win Crackers</h2>
+            <h2 className="text-lg font-bold text-gray-900">Ultra Crackers</h2>
             <p className="mt-1 text-xs leading-relaxed text-gray-500">
-              2/715, Muthalanayackanpatti road. Near PSNL College, Mettamalai
-              Sivakasi Main Road.626 203.
+              door no: 2/229 plot no 1008 , survey no: 228/30
+              village e.muthu linga puram ,taluk sattur
+              district virudhunagar
             </p>
           </div>
           <button
@@ -119,43 +173,52 @@ const CartDrawer: React.FC = () => {
           </button>
         </div>
 
-        {/* Step indicator */}
         <div className="flex items-center gap-2 px-6 py-3 text-xs font-medium text-gray-500">
           <span className={step === "review" ? "text-teal-600" : ""}>1. Review</span>
           <span className="h-px flex-1 bg-gray-200" />
           <span className={step === "details" ? "text-teal-600" : ""}>2. Details</span>
         </div>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-6 pb-6">
+        <div className="relative flex-1 overflow-y-auto px-6 pb-6">
+          {showSuccess && (
+            <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/95 px-4">
+              <div className="w-full max-w-sm rounded-2xl border border-teal-100 bg-white p-6 text-center shadow-xl">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-teal-100 text-teal-600">
+                  <CheckCircle2 className="h-6 w-6" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Order placed successfully</h3>
+                <p className="mt-2 text-sm leading-6 text-gray-600">
+                  Your order has been placed successfully. Thank you for choosing Ultra Crackers.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="mt-5 w-full rounded-md bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+
           {step === "review" ? (
             <>
               {items.length === 0 ? (
-                <p className="mt-10 text-center text-sm text-gray-500">
-                  Your cart is empty.
-                </p>
+                <p className="mt-10 text-center text-sm text-gray-500">Your cart is empty.</p>
               ) : (
                 <ul className="mt-2 divide-y divide-gray-100">
                   {items.map((item) => (
                     <li key={item.id} className="flex items-center gap-3 py-4">
-                      <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
+                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-gray-100">
+                        <Image src={item.image} alt={item.name} fill className="object-cover" />
                       </div>
 
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-gray-900">
-                          {item.name}
-                        </p>
+                        <p className="truncate text-sm font-medium text-gray-900">{item.name}</p>
                         <p className="mt-0.5 text-xs text-gray-500">
                           ₹{item.price.toLocaleString("en-IN")} each
                         </p>
 
-                        {/* Quantity stepper */}
                         <div className="mt-2 inline-flex items-center rounded-md border border-gray-200">
                           <button
                             type="button"
@@ -199,41 +262,53 @@ const CartDrawer: React.FC = () => {
             </>
           ) : (
             <div className="mt-2 space-y-4">
-              <Field label="Name">
+              <Field label="Name" error={errors.name}>
                 <input
                   type="text"
                   placeholder="Your Name"
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="input"
+                  onChange={(e) => {
+                    setForm({ ...form, name: e.target.value });
+                    if (errors.name) setErrors({ ...errors, name: undefined });
+                  }}
+                  className={`input ${errors.name ? "border-red-500" : ""}`}
                 />
               </Field>
 
-              <Field label="Mobile Number">
+              <Field label="Mobile Number" error={errors.mobile}>
                 <input
                   type="tel"
                   placeholder="Your Mobile Number"
                   value={form.mobile}
-                  onChange={(e) => setForm({ ...form, mobile: e.target.value })}
-                  className="input"
+                  onChange={(e) => {
+                    setForm({ ...form, mobile: e.target.value });
+                    if (errors.mobile) setErrors({ ...errors, mobile: undefined });
+                  }}
+                  className={`input ${errors.mobile ? "border-red-500" : ""}`}
                 />
               </Field>
 
-              <Field label="Email">
+              <Field label="Email" error={errors.email}>
                 <input
                   type="email"
                   placeholder="Your Email"
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className="input"
+                  onChange={(e) => {
+                    setForm({ ...form, email: e.target.value });
+                    if (errors.email) setErrors({ ...errors, email: undefined });
+                  }}
+                  className={`input ${errors.email ? "border-red-500" : ""}`}
                 />
               </Field>
 
-              <Field label="State">
+              <Field label="State" error={errors.state}>
                 <select
                   value={form.state}
-                  onChange={(e) => setForm({ ...form, state: e.target.value })}
-                  className="input"
+                  onChange={(e) => {
+                    setForm({ ...form, state: e.target.value });
+                    if (errors.state) setErrors({ ...errors, state: undefined });
+                  }}
+                  className={`input ${errors.state ? "border-red-500" : ""}`}
                 >
                   {STATES.map((s) => (
                     <option key={s} value={s}>
@@ -245,31 +320,36 @@ const CartDrawer: React.FC = () => {
 
               {belowMinimum && <MinimumOrderNotice />}
 
-              <Field label="City">
+              <Field label="City" error={errors.city}>
                 <input
                   type="text"
                   placeholder="Your City"
                   value={form.city}
-                  onChange={(e) => setForm({ ...form, city: e.target.value })}
-                  className="input"
+                  onChange={(e) => {
+                    setForm({ ...form, city: e.target.value });
+                    if (errors.city) setErrors({ ...errors, city: undefined });
+                  }}
+                  className={`input ${errors.city ? "border-red-500" : ""}`}
                 />
               </Field>
 
-              <Field label="Address">
+              <Field label="Address" error={errors.address}>
                 <textarea
                   placeholder="Your Address"
                   rows={3}
                   value={form.address}
-                  onChange={(e) => setForm({ ...form, address: e.target.value })}
-                  className="input resize-none"
+                  onChange={(e) => {
+                    setForm({ ...form, address: e.target.value });
+                    if (errors.address) setErrors({ ...errors, address: undefined });
+                  }}
+                  className={`input resize-none ${errors.address ? "border-red-500" : ""}`}
                 />
               </Field>
 
-              {/* Order summary */}
               <div className="mt-6 space-y-2 rounded-lg bg-gray-50 p-4 text-sm">
                 <SummaryRow label="Total" value={subtotal} />
                 <SummaryRow label="Discount Total" value={discountTotal} />
-                <SummaryRow label="Net Rate" value={subtotal - discountTotal} />
+                <SummaryRow label="Net Rate" value={netRate} />
                 <SummaryRow
                   label={`Packing Charge (${packingChargePercent}%)`}
                   value={packingCharge}
@@ -280,12 +360,17 @@ const CartDrawer: React.FC = () => {
                 </div>
               </div>
 
+              {submissionError ? (
+                <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+                  {submissionError}
+                </div>
+              ) : null}
+
               {belowMinimum && <MinimumOrderNotice />}
             </div>
           )}
         </div>
 
-        {/* Footer / actions */}
         <div className="border-t border-gray-100 px-6 py-4">
           {step === "review" ? (
             <>
@@ -314,18 +399,17 @@ const CartDrawer: React.FC = () => {
               </button>
               <button
                 type="button"
-                disabled={belowMinimum}
+                disabled={belowMinimum || isSubmitting}
                 onClick={handleSubmit}
                 className="flex-1 rounded-md bg-teal-600 py-3 text-sm font-semibold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-gray-300"
               >
-                Place Order
+                {isSubmitting ? "Placing Order..." : "Place Order"}
               </button>
             </div>
           )}
         </div>
       </div>
 
-      {/* Shared input styling (Tailwind @apply-style via className string) */}
       <style jsx global>{`
         .input {
           width: 100%;
@@ -345,13 +429,15 @@ const CartDrawer: React.FC = () => {
   );
 };
 
-const Field: React.FC<{ label: string; children: React.ReactNode }> = ({
+const Field: React.FC<{ label: string; children: React.ReactNode; error?: string }> = ({
   label,
   children,
+  error,
 }) => (
   <div>
     <label className="mb-1 block text-xs font-medium text-gray-600">{label}</label>
     {children}
+    {error ? <p className="mt-1 text-xs text-red-500">{error}</p> : null}
   </div>
 );
 

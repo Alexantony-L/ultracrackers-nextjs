@@ -37,3 +37,21 @@ model Product {
   updatedAt   DateTime  @updatedAt
   category    Category? @relation(fields: [categoryId], references: [id])
 }
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  orderNo    String   @unique
+  customer   String
+  phone      String
+  email      String
+  address    String
+  city       String
+  state      String
+  total      Float
+  subtotal   Float
+  items      Json
+  invoiceUrl String?
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

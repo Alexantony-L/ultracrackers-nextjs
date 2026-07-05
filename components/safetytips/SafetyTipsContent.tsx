@@ -69,7 +69,7 @@ const SafetyTipsContent: React.FC = () => {
       <div className="mx-auto max-w-5xl">
         {/* Intro */}
         <h2 className="text-2xl font-bold text-red-600 sm:text-3xl">
-          Crackers Win Crackers
+         Ultra Crackers 
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-700">
           There are certain Do&apos;s &amp; Don&apos;ts to follow while purchasing,

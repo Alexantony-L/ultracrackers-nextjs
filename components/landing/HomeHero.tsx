@@ -25,13 +25,13 @@ const HomeHero: React.FC = () => {
         <AnimatedReveal direction="right" className="text-center md:text-center">
           <p className="text-sm font-medium text-gray-500">Welcome To</p>
           <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-            Crackers Win Crackers
+            Ultra Crackers 
           </h1>
           <p className="mt-3 text-sm font-bold uppercase tracking-wide text-gray-800">
             We Have The Glory Begining In Fireworks Business
           </p>
           <p className="mt-6 text-sm leading-relaxed text-gray-600">
-            Crackers Win Crackers has been a well-known Fireworks Store in
+             Ultra Crackers has been a well-known Fireworks Store in
             Sivakasi. What started out as a hobby, has become our passion and
             we&apos;re delighted to share it with you. we&apos;re committed to
             offering quality products, unparalleled service and the most

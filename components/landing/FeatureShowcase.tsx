@@ -16,7 +16,7 @@ const ROWS = [
     number: "01",
     title: "", // no title shown for row 01 in the source design
     description: "",
-    exploreHref: "/fire-crackers",
+    exploreHref: "/products",
     image: "/cracker1.webp", // <-- update this path
   },
   {
@@ -24,7 +24,7 @@ const ROWS = [
     title: "Gift Boxes",
     description:
       "We are specialists in fireworks gift boxes collection. We have a wide range of cracker collections that's meant for all celebrations. The ease of sitting at home and ordering Fire Crackers this festive season at a very affordable price.",
-    exploreHref: "/gift-box",
+    exploreHref: "/products",
     image: "/cracker2.webp", // <-- update this path
   },
 ];

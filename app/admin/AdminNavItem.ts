@@ -4,6 +4,7 @@ import {
   Tags,
   PackagePlus,
   FolderPlus,
+  ReceiptText,
 } from "lucide-react";
 
 
@@ -32,5 +33,10 @@ export const navItems = [
     href: "/admin/category/add",
     label: "Add Category",
     icon: FolderPlus,
+  },
+  {
+    href: "/admin/orders",
+    label: "Orders",
+    icon: ReceiptText,
   },
 ];

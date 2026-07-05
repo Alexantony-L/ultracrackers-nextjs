@@ -36,7 +36,7 @@ const StoreHeader: React.FC = () => {
             </h2>
             <div className="mt-1 flex items-start gap-2 text-sm text-gray-800">
               <div className="flex flex-col leading-snug">
-                    door no: 2/229 plot no 1008
+                    Door no: 2/229 plot no 1008
 survey no: 228/30
 village e.muthu linga puram
 taluk sattur

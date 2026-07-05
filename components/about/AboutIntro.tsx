@@ -25,7 +25,7 @@ const AboutIntro: React.FC = () => {
         <AnimatedReveal direction="right">
           <h2 className="text-3xl font-semibold text-gray-800 sm:text-4xl">About</h2>
           <h1 className="mt-1 text-3xl font-bold text-gray-900 sm:text-4xl">
-            Crackers Win Crackers
+            Ultra Crackers 
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-gray-600">
             This is an outcome of the experience and knowledge we share in
