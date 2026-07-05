@@ -119,7 +119,7 @@ const CartDrawer: React.FC = () => {
 
     try {
       const response = await fetch(
-        process.env.NEXT_PUBLIC_ORDER_API_URL || "http://localhost:3000/api/orders",
+        "/api/orders",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
