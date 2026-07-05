@@ -1,24 +1,22 @@
-import OfferBar from "@/components/common/OfferBar";
-import ProductGrid from "@/components/products/ProductGrid";
-import { prisma } from "@/lib/prisma";
+import HomeHero from "@/components/landing/HomeHero";
+import WhyChooseUs from "@/components/landing/WhyChooseUs";
+import FeatureShowcase from "@/components/landing/FeatureShowcase";
+import FireworksOutlet from "@/components/landing/FireworksOutlet";
+import CrackersShopGallery from "@/components/landing/CrackersShopGallery";
+import SafetyFooter from "@/components/common/Footer";
 
-export default async function Home() {
-  const products =
-    await prisma.product.findMany({
-      where: {
-        active: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
 
+
+export default function HomePage() {
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10">
-      {/* <h1 className="mb-8 text-center text-4xl font-bold">
-        Ultra Crackers
-      </h1> */}
-      <ProductGrid products={products} />
-    </main>
+    <>
+      <HomeHero />
+      <WhyChooseUs />
+      <FeatureShowcase />
+      <FireworksOutlet />
+          <CrackersShopGallery />
+          <SafetyFooter/>
+          
+    </>
   );
 }
