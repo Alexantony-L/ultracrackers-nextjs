@@ -33,6 +33,7 @@ export interface CartItem {
   name: string;
   image: string;
   price: number;
+  mrp: number;
   quantity: number;
 }
 

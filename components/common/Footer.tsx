@@ -12,18 +12,18 @@ import { MessageCircle, Phone, Mail } from "lucide-react";
  * seal image path and Google Maps embed URL.
  */
 
-const SEAL_IMAGE_SRC = "/trusted_logo.png"; 
+const SEAL_IMAGE_SRC = "/ultrcrackers_logo.png";
 
-const MAP_LINK = 
-  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31487.018627975347!2d77.8066977028841!3d9.432157503066504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b06cb86df4d7425%3A0xa8777c3077322058!2sCelebrity%20Crackers!5e0!3m2!1sen!2sin!4v1661878160597!5m2!1sen!2sin"; // <-- update this path/URL
+
+const MAP_LINK ="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3936.3746129466126!2d77.90764997502328!3d9.388481090687863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMjMnMTguNSJOIDc3wrA1NCczNi44IkU!5e0!3m2!1sen!2sin!4v1783230369768!5m2!1sen!2sin"
 
 
 const QUICK_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "About Celebrity Crackers", href: "/about" },
-  { label: "Fire Crackers", href: "/fire-crackers" },
-  { label: "Fireworks Gift Box", href: "/gift-box" },
-  { label: "Price List", href: "/price-list" },
+  { label: "Home", href: "/home" },
+  { label: "About Ultra Crackers", href: "/about" },
+  // { label: "Fire Crackers", href: "/fire-crackers" },
+  // { label: "Fireworks Gift Box", href: "/gift-box" },
+  // { label: "Price List", href: "/price-list" },
   { label: "Quick Purchase", href: "/quick-order" },
   { label: "Contact us", href: "/contact" },
 ];
@@ -41,10 +41,13 @@ const SafetyFooter: React.FC = () => {
             height={110}
             className="h-24 w-24 object-contain"
           />
-          <h3 className="mt-4 text-lg font-bold text-teal-600">Our Showroom</h3>
-          <p className="mt-2 text-sm leading-relaxed text-gray-700">
-            Advik Pyro World 14/452/1, Sri Annamalaiyar Nagar , Sivakasi to
-            Sattur Main Road Anupankulam, Sivakasi (East)- 626 189
+          <h3 className="mt-4 text-lg font-bold text-[#f8ab13]">Our Showroom</h3>
+          <p className="mt-2 text-sm leading-relaxed text-gray-700 lowercase">
+            door no: 2/229 plot no 1008
+survey no: 228/30
+village e.muthu linga puram
+taluk sattur
+district virudhunagar
           </p>
         </div>
 
@@ -53,7 +56,7 @@ const SafetyFooter: React.FC = () => {
           <h3 className="text-lg font-bold text-gray-900">Contact Us</h3>
 
           <div className="mt-4">
-            <h4 className="font-semibold text-teal-600">Whats App</h4>
+            <h4 className="font-semibold text-[#f8ab13]">Whats App</h4>
             <a
               href="https://wa.me/918668130949"
               target="_blank"
@@ -66,7 +69,7 @@ const SafetyFooter: React.FC = () => {
           </div>
 
           <div className="mt-4">
-            <h4 className="font-semibold text-teal-600">Mobile</h4>
+            <h4 className="font-semibold text-[#f8ab13]">Mobile</h4>
             <a
               href="tel:+918668130949"
               className="mt-1 flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600"
@@ -77,13 +80,13 @@ const SafetyFooter: React.FC = () => {
           </div>
 
           <div className="mt-4">
-            <h4 className="font-semibold text-teal-600">Email</h4>
+            <h4 className="font-semibold text-[#f8ab13]">Email</h4>
             <a
-              href="mailto:celebritycrackers@gmail.com"
+              href="mailto:Ultracrackers2026@gmail.com"
               className="mt-1 flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600"
             >
               <Mail className="h-4 w-4" />
-              celebritycrackers@gmail.com
+              Ultracrackers2026@gmail.com
             </a>
           </div>
         </div>
@@ -96,7 +99,7 @@ const SafetyFooter: React.FC = () => {
               <a
                 key={link.label}
                 href={link.href}
-                className="rounded bg-teal-500 px-3 py-2 text-xs font-medium text-white transition hover:bg-teal-600"
+                className="rounded bg-[#f8ab13] px-3 py-2 text-xs font-medium text-white transition hover:bg-[#d98c00]"
               >
                 {link.label}
               </a>

@@ -3,6 +3,7 @@ import { CartProvider } from "@/components/cart/CartContext";
 import ProductListing from "@/components/products/ProductListing";
 import CartButton from "@/components/cart/CartButton";
 import CartDrawer from "@/components/cart/CartDrawer";
+import SafetyFooter from "@/components/common/Footer";
 
 export default function ProductsPage() {
   return (
@@ -10,6 +11,7 @@ export default function ProductsPage() {
       <ProductListing />
       <CartButton />
       <CartDrawer />
+      <SafetyFooter/>
     </CartProvider>
   );
 }

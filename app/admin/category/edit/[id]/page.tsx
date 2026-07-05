@@ -11,6 +11,10 @@ export default function EditCategoryPage() {
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [previewImage, setPreviewImage] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +28,8 @@ export default function EditCategoryPage() {
 
       setName(data?.name || "");
       setSlug(data?.slug || "");
+      setImageUrl(data?.imageUrl || "");
+      setPreviewImage(data?.imageUrl || "");
     } catch (error) {
       console.error(error);
       alert("Failed to load category");
@@ -32,12 +38,50 @@ export default function EditCategoryPage() {
     }
   };
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setUploadingImage(true);
+    setPreviewImage(URL.createObjectURL(file));
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/upload/category", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      const uploadedImageUrl = data.imageUrl || data.url;
+
+      if (!response.ok || !uploadedImageUrl) {
+        throw new Error("Image upload failed");
+      }
+
+      setImageUrl(uploadedImageUrl);
+      setPreviewImage(uploadedImageUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload image");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   const handleUpdate = async () => {
+    if (updating) return;
+
+    setUpdating(true);
+
     try {
       const response = await fetch(`/api/categories/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, slug }),
+        body: JSON.stringify({ name, slug, imageUrl }),
       });
 
       if (!response.ok) throw new Error("Update failed");
@@ -47,6 +91,8 @@ export default function EditCategoryPage() {
     } catch (error) {
       console.error(error);
       alert("Failed to update category");
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -97,6 +143,40 @@ export default function EditCategoryPage() {
                 className="w-full rounded-lg border border-slate-300 p-3 outline-none transition-colors duration-150 focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20"
               />
             </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-700">Category Image</label>
+
+              <div className="flex h-72 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50">
+                {previewImage ? (
+                  <img
+                    src={previewImage}
+                    alt="Category"
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 text-slate-400">
+                    <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 8.25l4.5-4.5m0 0L12 8.25M7.5 3.75v9" />
+                    </svg>
+                    <span className="text-sm font-medium">No image selected</span>
+                  </div>
+                )}
+              </div>
+
+              <label className="mt-4 flex w-full cursor-pointer items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-150 hover:bg-slate-50">
+                {uploadingImage ? "Uploading..." : "Change Image"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
           </div>
 
           <div className="mt-8 flex justify-end gap-4 border-t border-slate-100 pt-6">
@@ -109,9 +189,10 @@ export default function EditCategoryPage() {
 
             <button
               onClick={handleUpdate}
-              className="rounded-lg bg-[#f8ab13] px-8 py-3 font-semibold text-white shadow-md shadow-[#f8ab13]/30 transition-all duration-150 hover:bg-[#e0980a] hover:shadow-lg hover:shadow-[#f8ab13]/40 hover:-translate-y-0.5 active:translate-y-0"
+              disabled={updating}
+              className="flex cursor-pointer items-center justify-center rounded-lg bg-[#f8ab13] px-8 py-3 font-semibold text-white shadow-md shadow-[#f8ab13]/30 transition-all duration-150 hover:bg-[#e0980a] hover:shadow-lg hover:shadow-[#f8ab13]/40 hover:-translate-y-0.5 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Update
+              {updating ? "Updating..." : "Update"}
             </button>
           </div>
         </div>

@@ -7,6 +7,13 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
   return NextResponse.json(
@@ -28,8 +35,11 @@ export async function POST(
         price: Number(
           body.price
         ),
+        mrp: body.mrp ? Number(body.mrp) : null,
+        unit: body.unit || null,
         imageUrl:
           body.imageUrl,
+        categoryId: body.categoryId ? Number(body.categoryId) : null,
         active: true,
       },
     });

@@ -29,7 +29,10 @@ export async function POST(request: Request) {
 
   await writeFile(uploadPath, buffer);
 
+  const imageUrl = `/uploads/category/${fileName}`;
+
   return Response.json({
-    url: `/uploads/category/${fileName}`,
+    imageUrl,
+    url: imageUrl,
   });
 }

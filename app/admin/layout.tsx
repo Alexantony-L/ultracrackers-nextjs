@@ -3,46 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AdminGuard from "../../components/admin/AdminGuard";
+import { navItems } from "./AdminNavItem"; 
 
 
-const navItems = [
-  {
-    href: "/admin/dashboard",
-    label: "Dashboard",
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-      </svg>
-    ),
-  },
-  {
-    href: "/admin/products",
-    label: "Products",
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
-      </svg>
-    ),
-  },
-  {
-    href: "/admin/products/add",
-    label: "Add Product",
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-      </svg>
-    ),
-  },
-  {
-    href: "/admin/category/add",
-    label: "Add Category",
-    icon: (
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-      </svg>
-    ),
-  },
-];
 
 export default function AdminLayout({
   children,
@@ -57,53 +20,31 @@ export default function AdminLayout({
 
   return (
     <AdminGuard>
-      <div className="flex min-h-screen bg-slate-100">
-        <aside className="flex w-64 flex-col bg-slate-950 p-5 text-white">
-          {/* Brand */}
-          {/* <div className="mb-8 flex items-center gap-3 px-1">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f8ab13]">
-              <svg className="h-5 w-5 text-slate-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M10.5 8.25a1.5 1.5 0 113 0v3.75a1.5 1.5 0 01-3 0V8.25z" />
-              </svg>
-            </div>
-            <h1 className="text-lg font-bold leading-tight">
-              Ultra Crackers
-            </h1>
-          </div> */}
+      <div className="flex min-h-screen bg-white shadow">
+        <aside className="flex w-64 flex-col border-r border-gray-200 bg-gray-50 p-5 text-black shadow">
+{/* <aside className="flex w-64 flex-col bg-gradient-to-b from-gray-900 to-gray-800 p-5 text-gray-100 shadow-xl"> */}
 
-          {/* Nav */}
-          <nav className="flex-1 space-y-1">
-            <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Menu
-            </p>
-
-            {navItems.map((item) => {
-              const isActive =
-                item.href === "/admin/products"
-                  ? pathname === "/admin/products"
-                  : pathname === item.href;
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`
-                    flex items-center gap-3 rounded-lg px-3 py-2.5
-                    text-sm font-medium
-                    transition-colors duration-150
-                    ${
-                      isActive
-                        ? "bg-[#f8ab13] text-slate-950"
-                        : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                    }
-                  `}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <nav className="flex flex-col gap-1 p-3">
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        const isActive = pathname === item.href;
+ 
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition ${
+              isActive
+                ? "bg-teal-50 text-teal-700"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            }`}
+          >
+            <Icon className="h-5 w-5" />
+            {item.label}
+          </Link>
+        );
+      })}
+    </nav>
 
           {/* Logout */}
           <div className="mt-1 border-t border-slate-800 pt-1">

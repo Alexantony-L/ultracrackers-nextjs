@@ -14,9 +14,18 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    const slug =
+      body.slug ||
+      (body.name || "")
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-");
+
     const category = await prisma.category.create({
       data: {
         name: body.name,
+        slug,
         imageUrl: body.imageUrl,
       },
     });

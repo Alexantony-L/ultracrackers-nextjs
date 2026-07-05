@@ -84,7 +84,7 @@ const NavBar: React.FC = () => {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:justify-center sm:gap-10 sm:px-8">
         {/* Mobile: CTA + hamburger toggle */}
         <div className="flex w-full items-center justify-between sm:hidden">
-          <Link
+          {/* <Link
             href="/quick-order"
             className={`rounded-full px-5 py-2 font-serif shadow-sm transition hover:bg-teal-50 active:scale-95 ${
               isActive("/quick-order", true)
@@ -93,7 +93,7 @@ const NavBar: React.FC = () => {
             }`}
           >
             Quick Order
-          </Link>
+          </Link> */}
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}

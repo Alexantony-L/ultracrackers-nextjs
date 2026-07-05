@@ -3,9 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   const category = await prisma.category.findUnique({
     where: { id: Number(id) },
@@ -16,9 +20,13 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
 ) {
-  const { id } = params;
+  const { id } = await params;
   const body = await req.json();
 
   const slug =
@@ -31,17 +39,22 @@ export async function PUT(
 
   const category = await prisma.category.update({
     where: { id: Number(id) },
-    data: { name: body.name, slug },
+    data: { name: body.name, slug, imageUrl: body.imageUrl || null },
   });
+  console.log("Updated category:", category);
 
   return NextResponse.json(category);
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  {
+    params,
+  }: {
+    params: Promise<{ id: string }>;
+  }
 ) {
-  const { id } = params;
+  const { id } = await params;
 
   await prisma.category.delete({ where: { id: Number(id) } });
 

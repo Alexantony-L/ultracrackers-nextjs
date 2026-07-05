@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function AddProductPage() {
@@ -9,8 +9,29 @@ export default function AddProductPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [mrp, setMrp] = useState("");
+  const [unit, setUnit] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [preview, setPreview] = useState("");
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        if (!response.ok) throw new Error("Failed to load categories");
+
+        const data = await response.json();
+        setCategories(data);
+        if (data[0]) setCategoryId(String(data[0].id));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
  const handleImageChange = async (
   e: React.ChangeEvent<HTMLInputElement>
@@ -53,6 +74,9 @@ export default function AddProductPage() {
           description,
           imageUrl,
           price,
+          mrp,
+          unit,
+          categoryId: categoryId ? Number(categoryId) : null,
         }),
       });
 
@@ -117,22 +141,29 @@ export default function AddProductPage() {
                 placeholder="Rocket Bomb"
               />
 
+              
               <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                Description
+                MRP
               </label>
 
-              <textarea
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="
-                  w-full rounded-lg border border-slate-300
-                  p-3 outline-none
-                  transition-colors duration-150
-                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                "
-                placeholder="Enter product description"
-              />
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  ₹
+                </span>
+                <input
+                  type="number"
+                  value={mrp}
+                  onChange={(e) => setMrp(e.target.value)}
+                  className="
+                    w-full rounded-lg border border-slate-300
+                    p-3 pl-7 outline-none
+                    transition-colors duration-150
+                    focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                  "
+                  placeholder="340"
+                />
+              </div>
+            
 
               <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
                 Price
@@ -155,7 +186,67 @@ export default function AddProductPage() {
                   placeholder="150"
                 />
               </div>
+
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                Unit
+              </label>
+
+              <input
+                type="text"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="
+                  w-full rounded-lg border border-slate-300
+                  p-3 outline-none
+                  transition-colors duration-150
+                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                "
+                placeholder="1 BOX"
+              />
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                Category
+              </label>
+
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="
+                  w-full rounded-lg border border-slate-300
+                  p-3 outline-none
+                  transition-colors duration-150
+                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                "
+              >
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                Description
+              </label>
+
+              <textarea
+                rows={5}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="
+                  w-full rounded-lg border border-slate-300
+                  p-3 outline-none
+                  transition-colors duration-150
+                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                "
+                placeholder="Enter product description"
+              />
             </div>
+
+
+
+            
 
             {/* Right Side */}
             <div>
@@ -234,6 +325,16 @@ export default function AddProductPage() {
                   <span className="text-[#f8ab13] font-bold">
                     ₹{price || "0"}
                   </span>
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-semibold text-slate-900">MRP:</span>{" "}
+                  <span className="text-slate-700">₹{mrp || "0"}</span>
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-semibold text-slate-900">Unit:</span>{" "}
+                  {unit || "-"}
                 </p>
               </div>
             </div>

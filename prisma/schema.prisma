@@ -17,6 +17,7 @@ model Admin {
 model Category {
   id        Int       @id @default(autoincrement())
   name      String    @unique
+  slug      String?
   imageUrl  String?
   createdAt DateTime  @default(now())
   products  Product[]
@@ -28,6 +29,8 @@ model Product {
   description String?
   imageUrl    String?
   price       Float
+  mrp         Float?
+  unit        String?
   categoryId  Int?
   active      Boolean   @default(true)
   createdAt   DateTime  @default(now())

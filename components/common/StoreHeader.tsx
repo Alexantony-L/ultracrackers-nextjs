@@ -11,7 +11,7 @@ import { MapPin, Phone } from "lucide-react";
  * "Seal of Trust" image (e.g. "/images/seal-of-trust.png").
  */
 
-const SEAL_IMAGE_SRC = "/trusted_logo.png"; // <-- update this path
+const SEAL_IMAGE_SRC = "/ultrcrackers_logo.png";
 
 const WhatsAppIcon = ({ className = "" }: { className?: string }) => (
   <svg
@@ -31,50 +31,52 @@ const StoreHeader: React.FC = () => {
         {/* Left: Business name + address */}
         <div className="hidden min-w-0 justify-self-start sm:block">
           <div className="flex flex-col">
-            <h2 className="text-lg font-semibold text-teal-600 sm:text-xl">
-              Advik Pyro World
+            <h2 className="text-lg font-semibold text-[#f8ab13] sm:text-xl">
+              Ultra Crackers
             </h2>
             <div className="mt-1 flex items-start gap-2 text-sm text-gray-800">
               <div className="flex flex-col leading-snug">
-                <span>Advik Pyro World 14/452/1,</span>
-                <span>Sri Annamalaiyar Nagar,</span>
-                <span>Sivakasi to Sattur Main Road Anupankulam</span>
-                <span>Sivakasi (East) - 626 189,</span>
+                    door no: 2/229 plot no 1008
+survey no: 228/30
+village e.muthu linga puram
+taluk sattur
+district virudhunagar
               </div>
             </div>
           </div>
         </div>
 
         {/* Center: Seal of Trust image */}
-        <div className="flex justify-center rounded-xl bg-white p-2 shadow-sm ring-1 ring-gray-100 sm:justify-self-center">
+        <div className="flex justify-center ring-gray-100 sm:justify-self-center">
           <Image
             src={SEAL_IMAGE_SRC}
             alt="Seal of Trust - Celebrity Crackers Original"
-            width={180}
-            height={180}
+            width={280}
+
+            height={280}
             priority
-            className="h-24 w-24 object-contain sm:h-28 sm:w-28 md:h-32 md:w-32"
-            quality={100}
+            className="h-40 w-40 object-contain sm:h-36 sm:w-36 md:h-44 md:w-44"
+            // quality={100}
           />
         </div>
 
         {/* Right: Contact info */}
         <div className="hidden flex-shrink-0 flex-col items-end gap-1 justify-self-end text-sm text-gray-800 sm:flex">
           <a
-            href="https://wa.me/918668130949"
+            href="https://wa.me/919360528398"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-teal-600"
           >
-            <WhatsAppIcon className="h-4 w-4 text-green-500" />
-            <span>+91 8668130949</span>
+            <WhatsAppIcon className="h-4 w-4 text-[#f8ab13]" />
+            <span>+91 9360528398</span>
           </a>
           <a
-            href="tel:+918668130949"
+            href="tel:+919360528398"
             className="flex items-center gap-2 hover:text-teal-600"
           >
-            <Phone className="h-4 w-4 text-teal-600" />
-            <span>+91 8668130949</span>
+            <Phone className="h-4 w-4 text-[#f8ab13]" />
+            <span>+91 8526230861</span>
           </a>
         </div>
       </div>

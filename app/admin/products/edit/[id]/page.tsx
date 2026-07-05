@@ -13,14 +13,20 @@ export default function EditProductPage() {
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [price, setPrice] = useState("");
-  const [active, setActive] =
-  useState(true);
+  const [mrp, setMrp] = useState("");
+  const [unit, setUnit] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const [active, setActive] = useState(true);
+  const [previewImage, setPreviewImage] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+    fetchCategories();
+  }, [id]);
 
   const fetchProduct = async () => {
     try {
@@ -31,13 +37,65 @@ export default function EditProductPage() {
       setName(product.name);
       setDescription(product.description || "");
       setImageUrl(product.imageUrl || "");
+      setPreviewImage(product.imageUrl || "");
       setPrice(product.price.toString());
+      setMrp(product.mrp?.toString() || "");
+      setUnit(product.unit || "");
+      setCategoryId(product.categoryId?.toString() || "");
       setActive(product.active);
     } catch (error) {
       console.error(error);
       alert("Failed to load product");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("/api/categories");
+
+      if (!response.ok) {
+        throw new Error("Failed to load categories");
+      }
+
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setUploadingImage(true);
+    setPreviewImage(URL.createObjectURL(file));
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.imageUrl) {
+        throw new Error("Image upload failed");
+      }
+
+      setImageUrl(data.imageUrl);
+      setPreviewImage(data.imageUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload image");
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -53,6 +111,9 @@ export default function EditProductPage() {
           description,
           imageUrl,
           price,
+          mrp,
+          unit,
+          categoryId: categoryId ? Number(categoryId) : null,
           active
         }),
       });
@@ -176,6 +237,68 @@ export default function EditProductPage() {
                   "
                 />
               </div>
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                MRP
+              </label>
+
+              <div className="relative">
+                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                  ₹
+                </span>
+                <input
+                  type="number"
+                  placeholder="340"
+                  value={mrp}
+                  onChange={(e) => setMrp(e.target.value)}
+                  className="
+                    w-full rounded-lg border border-slate-300
+                    p-3 pl-7 outline-none
+                    transition-colors duration-150
+                    focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                  "
+                />
+              </div>
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                Unit
+              </label>
+
+              <input
+                type="text"
+                placeholder="1 BOX"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="
+                  w-full rounded-lg border border-slate-300
+                  p-3 outline-none
+                  transition-colors duration-150
+                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                "
+              />
+
+              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
+                Category
+              </label>
+
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="
+                  w-full rounded-lg border border-slate-300
+                  p-3 outline-none
+                  transition-colors duration-150
+                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                "
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
               <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
   Product Status
 </label>
@@ -236,9 +359,9 @@ export default function EditProductPage() {
                   border-slate-300 bg-slate-50
                 "
               >
-                {imageUrl ? (
+                {previewImage ? (
                   <img
-                    src={imageUrl}
+                    src={previewImage}
                     alt="Product"
                     className="h-full w-full object-cover"
                     onError={(e) => {
@@ -267,6 +390,16 @@ export default function EditProductPage() {
                 )}
               </div>
 
+              <label className="mt-4 flex w-full cursor-pointer items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-150 hover:bg-slate-50">
+                {uploadingImage ? "Uploading..." : "Change Photo"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
                   Preview Details
@@ -282,6 +415,16 @@ export default function EditProductPage() {
                   <span className="text-[#f8ab13] font-bold">
                     ₹{price || "0"}
                   </span>
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-semibold text-slate-900">MRP:</span>{" "}
+                  <span className="text-slate-700">₹{mrp || "0"}</span>
+                </p>
+
+                <p className="mt-1 text-sm text-slate-700">
+                  <span className="font-semibold text-slate-900">Unit:</span>{" "}
+                  {unit || "-"}
                 </p>
               </div>
             </div>

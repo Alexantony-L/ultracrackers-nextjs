@@ -1,6 +1,8 @@
-import React from "react";
+'use client';
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import AnimatedReveal from "@/components/landing/AnimatedReveal"; // adjust path to wherever you placed AnimatedReveal
+
 
 /**
  * OurProducts
@@ -19,42 +21,40 @@ import AnimatedReveal from "@/components/landing/AnimatedReveal"; // adjust path
  * Each product just needs { id, name, image } shape to work.
  */
 
-export interface Product {
+export interface Category {
   id: string;
   name: string;
-  image: string;
+  imageUrl: string;
 }
 
-const DUMMY_PRODUCTS: Product[] = [
-  { id: "bijili-crackers", name: "Bijili Crackers", image: "/images/products/placeholder.png" },
-  { id: "single-sound", name: "Single Sound", image: "/images/products/placeholder.png" },
-  { id: "atom-bomb", name: "Atom Bomb", image: "/images/products/placeholder.png" },
-  { id: "rockets", name: "Rockets", image: "/images/products/placeholder.png" },
-  { id: "ground-chakars", name: "Ground Chakars", image: "/images/products/placeholder.png" },
-  { id: "flower-pots", name: "Flower Pots", image: "/images/products/placeholder.png" },
-  { id: "sparklers", name: "Sparklers", image: "/images/products/placeholder.png" },
-  { id: "pencils", name: "Pencils", image: "/images/products/placeholder.png" },
-  { id: "colour-matches", name: "Colour Matches", image: "/images/products/placeholder.png" },
-  { id: "fancy-fountains", name: "Fancy Fountains", image: "/images/products/placeholder.png" },
-  { id: "sky-shots", name: "Sky Shots", image: "/images/products/placeholder.png" },
-];
-
-interface OurProductsProps {
-  products?: Product[];
-}
 
 const BG_IMAGE_SRC = "/images/products-bg-fireworks.jpg"; // <-- update this path
 
-const OurProducts: React.FC<OurProductsProps> = ({ products = DUMMY_PRODUCTS }) => {
+const OurProducts: React.FC= () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+ useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("/api/categories");
+        if (!response.ok) throw new Error("Failed to load categories");
+
+        const data = await response.json();
+        setCategories(data);
+    
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  console.log("Fetched categories:", categories);
   return (
     <section className="relative w-full overflow-hidden  px-4 py-16 sm:px-8">
       {/* Background fireworks image */}
-      <Image
-        src={BG_IMAGE_SRC}
-        alt=""
-        fill
-        className="object-cover opacity-40"
-      />
+
       <div className="absolute inset-0 " />
 
       <div className="relative mx-auto max-w-6xl">
@@ -72,18 +72,18 @@ const OurProducts: React.FC<OurProductsProps> = ({ products = DUMMY_PRODUCTS }) 
         </AnimatedReveal>
 
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-          {products.map((product, idx) => (
-            <AnimatedReveal key={product.id} direction="up" delay={(idx % 4) * 0.08}>
+          {categories.map((category, idx) => (
+            <AnimatedReveal key={category.id} direction="up" delay={(idx % 4) * 0.08}>
               <div className="flex flex-col items-center gap-4 rounded-lg bg-orange-50 px-4 py-8">
                 <div className="relative h-20 w-20">
                   <Image
-                    src={product.image}
-                    alt={product.name}
+                    src={category.imageUrl}
+                    alt={category.name}
                     fill
                     className="object-contain"
                   />
                 </div>
-                <p className="text-sm font-semibold text-blue-700">{product.name}</p>
+                <p className="text-sm font-semibold text-blue-700">{category.name}</p>
               </div>
             </AnimatedReveal>
           ))}

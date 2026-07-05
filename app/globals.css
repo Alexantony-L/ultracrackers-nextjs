@@ -26,7 +26,7 @@ body {
 
 .animate-marquee {
   display: inline-block;
-  animation: marquee 18s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 /* 

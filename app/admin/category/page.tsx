@@ -55,9 +55,9 @@ export default async function CategoriesPage() {
 					</thead>
 
 					<tbody className="divide-y divide-gray-100">
-						{categories.map((cat) => (
+						{categories.map((cat,idx) => (
 							<tr key={cat.id} className="group transition-colors duration-150 hover:bg-slate-50">
-								<td className="px-6 py-4 text-sm font-medium text-gray-400">#{cat.id}</td>
+								<td className="px-6 py-4 text-sm font-medium text-gray-400">#{idx + 1}</td>
 								<td className="px-6 py-4 text-sm font-semibold text-gray-900">{cat.name}</td>
 								<td className="px-6 py-4">
   {cat.imageUrl ? (

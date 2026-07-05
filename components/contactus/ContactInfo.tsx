@@ -11,15 +11,16 @@ import { MapPin, Phone, Mail } from "lucide-react";
 const CONTACT_DATA = {
   address: {
     lines: [
-      "Celebrity Crackers",
-      "Advik Pyro World",
-      "Advik Pyro World 14/452/1, Sri Annamalaiyar",
-      "Nagar , Sivakasi to Sattur Main Road",
-      "Anupankulam, Sivakasi (East)- 626 189",
+      "Ultra Crackers",
+      "Door No: 2/229, Plot No 1008",
+      "Survey No: 228/30",
+      "Village E. Muthu Linga Puram",
+      "Taluk Sattur",
+      "District Virudhunagar",
     ],
   },
-  phones: ["+91 8668130949", "+91 8668130949"],
-  email: "celebritycrackers@gmail.com",
+  phones: ["+91 9360528398", "+91 8526230861"],
+  email: "Ultracrackers2026@gmail.com",
 };
 
 const IconCircle: React.FC<{ children: React.ReactNode }> = ({ children }) => (

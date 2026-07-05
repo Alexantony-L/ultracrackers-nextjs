@@ -4,6 +4,9 @@ import DeleteButton from "../DeleteButton";
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
+    include: {
+      category: true,
+    },
     orderBy: {
       createdAt: "desc",
     },
@@ -92,13 +95,22 @@ export default async function ProductsPage() {
           <thead>
             <tr className="bg-gradient-to-r from-slate-900 to-slate-800 text-white">
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
-                ID
+                S. No
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                Image
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                 Product Name
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                MRP
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                 Price
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
+                Category
               </th>
               <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider">
                 Status
@@ -110,7 +122,7 @@ export default async function ProductsPage() {
           </thead>
 
           <tbody className="divide-y divide-gray-100">
-            {products.map((product) => (
+            {products.map((product,idx) => (
               <tr
                 key={product.id}
                 className="
@@ -120,7 +132,21 @@ export default async function ProductsPage() {
                 "
               >
                 <td className="px-6 py-4 text-sm font-medium text-gray-400">
-                  #{product.id}
+                  #{idx + 1}
+                </td>
+
+                <td className="px-6 py-4">
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="h-14 w-14 rounded-lg border border-gray-200 object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-14 w-14 items-center justify-center rounded-lg border border-dashed border-gray-300 text-xs text-gray-400">
+                      No Image
+                    </div>
+                  )}
                 </td>
 
                 <td className="px-6 py-4 text-sm font-semibold text-gray-900">
@@ -128,7 +154,14 @@ export default async function ProductsPage() {
                 </td>
 
                 <td className="px-6 py-4 text-sm font-medium text-gray-700">
+                  ₹{product.mrp}
+                </td>
+                <td className="px-6 py-4 text-sm font-medium text-gray-700">
                   ₹{product.price}
+                </td>
+
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {product.category?.name || "Uncategorized"}
                 </td>
 
                 <td className="px-6 py-4">

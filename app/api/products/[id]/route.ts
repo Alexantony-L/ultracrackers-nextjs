@@ -55,6 +55,10 @@ export async function PUT(
         price: Number(
           body.price
         ),
+        mrp: body.mrp ? Number(body.mrp) : null,
+        unit: body.unit || null,
+        imageUrl: body.imageUrl || null,
+        categoryId: body.categoryId ? Number(body.categoryId) : null,
       },
     });
 
