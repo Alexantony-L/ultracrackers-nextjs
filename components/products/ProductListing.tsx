@@ -336,7 +336,7 @@ const ProductListing: React.FC = () => {
                 <div
                   key={product.id}
                   className={`
-                    group relative flex flex-col justify-between overflow-hidden shadow-xl rounded-md   bg-white transition-all duration-500
+                  !bg-[#C7D8FF] group relative flex flex-col justify-between overflow-hidden shadow-xl rounded-md   bg-white transition-all duration-500
                     ${isSelected
                       ? " ring-2 ring-[#4361EE]/15 shadow-[0_8px_20px_-6px_rgba(67,97,238,0.2)]"
                       : "border-slate-100 shadow-[0_2px_8px_-3px_rgba(0,0,0,0.05)]  hover:shadow-[0_8px_20px_-6px_rgba(67,97,238,0.25)] hover:-translate-y-1"
@@ -436,16 +436,16 @@ const ProductListing: React.FC = () => {
                     )}
                     {/* Actions Control Section */}
                     <div className="mt-3.5 space-y-2">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
                         {/* Minimally designed Pill Stepper */}
-                        <div className="flex items-center justify-between rounded-xl border border-[#DCE4FF] bg-[#F8FAFF] p-1 w-24 shrink-0">
+                        <div className="flex items-center justify-between rounded-lg border border-[#DCE4FF] bg-[#F8FAFF] p-0.5 sm:p-1 w-20 sm:w-24 shrink-0">
                           <button
                             type="button"
                             onClick={() => handleStepperChange(product.id, displayQty - 1)}
-                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-lg transition-colors text-red-500 hover:bg-red-500 hover:text-white bg-red-50/50"
+                            className="flex h-5 w-5 sm:h-6 sm:w-6 cursor-pointer items-center justify-center rounded-md transition-colors text-red-500 hover:bg-red-500 hover:text-white bg-red-50/50"
                             aria-label="Decrease quantity"
                           >
-                            <Minus className="h-3 w-3" />
+                            <Minus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                           </button>
 
                           <input
@@ -455,16 +455,16 @@ const ProductListing: React.FC = () => {
                             onChange={(e) =>
                               handleStepperChange(product.id, Number(e.target.value) || 0)
                             }
-                            className="w-6 bg-transparent text-center text-xs font-bold text-slate-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            className="w-5 sm:w-6 bg-transparent text-center text-[10px] sm:text-xs font-bold text-slate-900 outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                           />
 
                           <button
                             type="button"
                             onClick={() => handleStepperChange(product.id, displayQty + 1)}
-                            className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-lg transition-colors text-emerald-600 hover:bg-emerald-600 hover:text-white bg-emerald-50/50"
+                            className="flex h-5 w-5 sm:h-6 sm:w-6 cursor-pointer items-center justify-center rounded-md transition-colors text-emerald-600 hover:bg-emerald-600 hover:text-white bg-emerald-50/50"
                             aria-label="Increase quantity"
                           >
-                            <Plus className="h-3 w-3" />
+                            <Plus className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                           </button>
                         </div>
 
@@ -472,7 +472,7 @@ const ProductListing: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => handleAddToCart(product)}
-                          className="flex-1 rounded-xl bg-[#4361EE] py-2 text-center text-xs font-bold tracking-wider uppercase text-white transition-all duration-300 hover:bg-[#3651D4] hover:shadow-md hover:shadow-[#4361EE]/20 active:scale-[0.98]"
+                          className="flex-1 rounded-lg bg-[#4361EE] py-1.5 sm:py-2 text-center text-[10px] sm:text-xs font-extrabold tracking-wider uppercase text-white transition-all duration-300 hover:bg-[#3651D4] hover:shadow-md hover:shadow-[#4361EE]/20 active:scale-[0.98]"
                         >
                           Add to cart
                         </button>
