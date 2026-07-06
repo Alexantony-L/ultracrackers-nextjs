@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteButton({
   id,
@@ -24,6 +25,7 @@ export default function DeleteButton({
     );
 
     if (response.ok) {
+      router.push("/admin/products?success=product_deleted");
       router.refresh();
     } else {
       alert("Delete failed");
@@ -34,6 +36,7 @@ export default function DeleteButton({
     <button
       onClick={handleDelete}
       className="
+        flex items-center gap-1
         rounded-lg
         bg-red-50
         px-3 py-2
@@ -44,6 +47,7 @@ export default function DeleteButton({
         hover:text-white
       "
     >
+      <Trash2 className="h-3 w-3" />
       Delete
     </button>
   );

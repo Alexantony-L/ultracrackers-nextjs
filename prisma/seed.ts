@@ -10,7 +10,7 @@ async function main() {
     },
   });
 
-  console.log("Admin Created");
+  // console.log("Admin Created");
 }
 
 main()

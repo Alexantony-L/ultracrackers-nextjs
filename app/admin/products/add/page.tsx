@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ArrowLeft, Loader2, Plus, UploadCloud } from "lucide-react";
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function AddProductPage() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [preview, setPreview] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -33,36 +36,39 @@ export default function AddProductPage() {
     fetchCategories();
   }, []);
 
- const handleImageChange = async (
-  e: React.ChangeEvent<HTMLInputElement>
-) => {
-  const file = e.target.files?.[0];
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
 
-  if (!file) return;
+    if (!file) return;
 
-  setPreview(
-    URL.createObjectURL(file)
-  );
+    setPreview(URL.createObjectURL(file));
+    setUploading(true);
 
-  const formData = new FormData();
+    const formData = new FormData();
+    formData.append("file", file);
 
-  formData.append("file", file);
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-  const response = await fetch(
-    "/api/upload",
-    {
-      method: "POST",
-      body: formData,
+      const data = await response.json();
+      setImageUrl(data.imageUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to upload image");
+    } finally {
+      setUploading(false);
     }
-  );
-
-  const data =
-    await response.json();
-
-  setImageUrl(data.imageUrl);
-};
+  };
 
   const handleSubmit = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+
     try {
       const response = await fetch("/api/products", {
         method: "POST",
@@ -84,169 +90,157 @@ export default function AddProductPage() {
         throw new Error("Failed to create product");
       }
 
-      router.push("/admin/products");
+      router.push("/admin/products?success=product_added");
     } catch (error) {
       console.error(error);
       alert("Failed to save product");
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-8">
+    <div className="min-h-screen bg-slate-55 p-4 sm:p-8">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f8ab13]/10">
-            <svg
-              className="h-6 w-6 text-[#f8ab13]"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6v12m6-6H6"
-              />
-            </svg>
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <Plus className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="text-4xl font-bold text-slate-900">
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
               Add New Product
             </h1>
-            <p className="mt-1 text-slate-500">
+            <p className="mt-1 text-sm text-slate-500">
               Create a new cracker product
             </p>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/50">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
           <div className="grid gap-8 md:grid-cols-2">
             {/* Left Side */}
-            <div>
-              <label className="mb-2 block text-sm font-semibold text-slate-700">
-                Product Name
-              </label>
-
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="
-                  w-full rounded-lg border border-slate-300
-                  p-3 outline-none
-                  transition-colors duration-150
-                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                "
-                placeholder="Rocket Bomb"
-              />
-
-              
-              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                MRP
-              </label>
-
-              <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                  ₹
-                </span>
+            <div className="space-y-5">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Product Name
+                </label>
                 <input
-                  type="number"
-                  value={mrp}
-                  onChange={(e) => setMrp(e.target.value)}
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="
                     w-full rounded-lg border border-slate-300
-                    p-3 pl-7 outline-none
+                    p-3 outline-none
                     transition-colors duration-150
-                    focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
+                    focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
                   "
-                  placeholder="340"
-                />
-              </div>
-            
-
-              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                Price
-              </label>
-
-              <div className="relative">
-                <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                  ₹
-                </span>
-                <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  className="
-                    w-full rounded-lg border border-slate-300
-                    p-3 pl-7 outline-none
-                    transition-colors duration-150
-                    focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                  "
-                  placeholder="150"
+                  placeholder="Rocket Bomb"
                 />
               </div>
 
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  MRP
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    ₹
+                  </span>
+                  <input
+                    type="number"
+                    value={mrp}
+                    onChange={(e) => setMrp(e.target.value)}
+                    className="
+                      w-full rounded-lg border border-slate-300
+                      p-3 pl-7 outline-none
+                      transition-colors duration-150
+                      focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
+                    "
+                    placeholder="340"
+                  />
+                </div>
+              </div>
 
-              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                Unit
-              </label>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Price
+                </label>
+                <div className="relative">
+                  <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                    ₹
+                  </span>
+                  <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className="
+                      w-full rounded-lg border border-slate-300
+                      p-3 pl-7 outline-none
+                      transition-colors duration-150
+                      focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
+                    "
+                    placeholder="150"
+                  />
+                </div>
+              </div>
 
-              <input
-                type="text"
-                value={unit}
-                onChange={(e) => setUnit(e.target.value)}
-                className="
-                  w-full rounded-lg border border-slate-300
-                  p-3 outline-none
-                  transition-colors duration-150
-                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                "
-                placeholder="1 BOX"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Unit
+                </label>
+                <input
+                  type="text"
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                  className="
+                    w-full rounded-lg border border-slate-300
+                    p-3 outline-none
+                    transition-colors duration-150
+                    focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
+                  "
+                  placeholder="1 BOX"
+                />
+              </div>
 
-              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                Category
-              </label>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Category
+                </label>
+                <select
+                  value={categoryId}
+                  onChange={(e) => setCategoryId(e.target.value)}
+                  className="
+                    w-full rounded-lg border border-slate-300
+                    p-3 outline-none
+                    transition-colors duration-150
+                    focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
+                  "
+                >
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              <select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-                className="
-                  w-full rounded-lg border border-slate-300
-                  p-3 outline-none
-                  transition-colors duration-150
-                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                "
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-
-              <label className="mb-2 mt-5 block text-sm font-semibold text-slate-700">
-                Description
-              </label>
-
-              <textarea
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="
-                  w-full rounded-lg border border-slate-300
-                  p-3 outline-none
-                  transition-colors duration-150
-                  focus:border-[#f8ab13] focus:ring-2 focus:ring-[#f8ab13]/20
-                "
-                placeholder="Enter product description"
-              />
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-slate-700">
+                  Description
+                </label>
+                <textarea
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="
+                    w-full rounded-lg border border-slate-300
+                    p-3 outline-none
+                    transition-colors duration-150
+                    focus:border-blue-600 focus:ring-2 focus:ring-blue-500/20
+                  "
+                  placeholder="Enter product description"
+                />
+              </div>
             </div>
-
-
-
-            
 
             {/* Right Side */}
             <div>
@@ -261,7 +255,7 @@ export default function AddProductPage() {
                   border-2 border-dashed
                   border-slate-300 bg-slate-50
                   transition-colors duration-150
-                  hover:border-[#f8ab13]/60 hover:bg-[#f8ab13]/5
+                  hover:border-blue-500 hover:bg-blue-50/10
                 "
               >
                 {preview ? (
@@ -272,19 +266,7 @@ export default function AddProductPage() {
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-2 text-slate-400">
-                    <svg
-                      className="h-10 w-10"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 7.5L12 3m0 0L7.5 7.5M12 3v13.5"
-                      />
-                    </svg>
+                    <UploadCloud className="h-10 w-10 text-slate-300" />
                     <span className="text-sm font-medium">
                       Upload Product Image
                     </span>
@@ -301,17 +283,18 @@ export default function AddProductPage() {
                   hover:bg-slate-50
                 "
               >
-                Choose File
+                {uploading ? "Uploading..." : "Choose File"}
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
                   className="hidden"
+                  disabled={uploading}
                 />
               </label>
 
               <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
                   Preview Details
                 </h3>
 
@@ -322,7 +305,7 @@ export default function AddProductPage() {
 
                 <p className="mt-1 text-sm text-slate-700">
                   <span className="font-semibold text-slate-900">Price:</span>{" "}
-                  <span className="text-[#f8ab13] font-bold">
+                  <span className="text-blue-600 font-bold">
                     ₹{price || "0"}
                   </span>
                 </p>
@@ -349,23 +332,28 @@ export default function AddProductPage() {
                 transition-colors duration-150
                 hover:bg-slate-50
               "
+              type="button"
             >
               Cancel
             </button>
 
             <button
               onClick={handleSubmit}
+              disabled={submitting || uploading}
               className="
-                rounded-lg bg-[#f8ab13]
+                flex items-center gap-2
+                rounded-lg bg-blue-600
                 px-8 py-3 font-semibold
-                text-white shadow-md shadow-[#f8ab13]/30
+                text-white shadow-md shadow-blue-500/20
                 transition-all duration-150
-                hover:bg-[#e0980a] hover:shadow-lg hover:shadow-[#f8ab13]/40
+                hover:bg-blue-700 hover:shadow-lg
                 hover:-translate-y-0.5
                 active:translate-y-0
+                disabled:opacity-75 disabled:cursor-not-allowed disabled:hover:translate-y-0
               "
             >
-              Save Product
+              {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+              {submitting ? "Saving..." : "Save Product"}
             </button>
           </div>
         </div>

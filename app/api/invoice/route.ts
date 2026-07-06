@@ -7,7 +7,7 @@ import { generatePdf } from "@/lib/invoice/pdf";
 
 export async function POST(req: Request) {
   try {
-    console.log("api hit")
+    // console.log("api hit")
     // 1. Receive order from frontend
     const order = await req.json();
 
@@ -17,9 +17,9 @@ export async function POST(req: Request) {
     // });
 
     // 3. Convert React component → HTML
-   
-const html = invoiceTemplate(order);
-const fileName = `invoice-${Date.now()}`;
+
+    const html = invoiceTemplate(order);
+    const fileName = `invoice-${Date.now()}`;
     // 4. Generate PDF and save it
     const invoice = await generatePdf(
       html,

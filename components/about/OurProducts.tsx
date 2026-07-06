@@ -30,10 +30,10 @@ export interface Category {
 
 const BG_IMAGE_SRC = "/images/products-bg-fireworks.jpg"; // <-- update this path
 
-const OurProducts: React.FC= () => {
+const OurProducts: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await fetch("/api/categories");
@@ -41,7 +41,7 @@ const OurProducts: React.FC= () => {
 
         const data = await response.json();
         setCategories(data);
-    
+
       } catch (error) {
         console.error(error);
       }
@@ -50,7 +50,7 @@ const OurProducts: React.FC= () => {
     fetchCategories();
   }, []);
 
-  console.log("Fetched categories:", categories);
+  // console.log("Fetched categories:", categories);
   return (
     <section className="relative w-full overflow-hidden  px-4 py-16 sm:px-8">
       {/* Background fireworks image */}
@@ -61,7 +61,7 @@ const OurProducts: React.FC= () => {
         <AnimatedReveal direction="up" className="text-center">
           <h2 className="text-3xl font-bold text-[#1E3A8A] sm:text-4xl">Our Products</h2>
           <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-gray-700">
-       At <b>Ultra Crackers</b>, we believe every celebration deserves to be bright, joyful, and safe. We offer a wide collection of premium-quality fireworks sourced from trusted manufacturers in Sivakasi. From classic favorites to the latest festive collections, every product is carefully selected to ensure safety, vibrant performance, and excellent value. With competitive pricing, reliable service, and timely delivery, we are committed to making your celebrations memorable.
+            At <b>Ultra Crackers</b>, we believe every celebration deserves to be bright, joyful, and safe. We offer a wide collection of premium-quality fireworks sourced from trusted manufacturers in Sivakasi. From classic favorites to the latest festive collections, every product is carefully selected to ensure safety, vibrant performance, and excellent value. With competitive pricing, reliable service, and timely delivery, we are committed to making your celebrations memorable.
           </p>
         </AnimatedReveal>
 

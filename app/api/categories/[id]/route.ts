@@ -41,7 +41,7 @@ export async function PUT(
     where: { id: Number(id) },
     data: { name: body.name, slug, imageUrl: body.imageUrl || null },
   });
-  console.log("Updated category:", category);
+  // console.log("Updated category:", category);
 
   return NextResponse.json(category);
 }

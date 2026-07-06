@@ -17,7 +17,7 @@ export default function RecentItemsTabs({
   );
 
   return (
-    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-lg shadow-slate-200/50">
+    <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
       <div className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-slate-900">Recent Items</h2>
@@ -32,7 +32,7 @@ export default function RecentItemsTabs({
             onClick={() => setActiveTab("products")}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
               activeTab === "products"
-                ? "bg-[#f8ab13] text-white shadow-sm"
+                ? "bg-blue-600 text-white shadow-sm"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -43,7 +43,7 @@ export default function RecentItemsTabs({
             onClick={() => setActiveTab("categories")}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
               activeTab === "categories"
-                ? "bg-[#f8ab13] text-white shadow-sm"
+                ? "bg-blue-600 text-white shadow-sm"
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
@@ -53,8 +53,8 @@ export default function RecentItemsTabs({
       </div>
 
       {activeTab === "products" ? (
-        <div className="overflow-hidden rounded-xl border border-slate-200">
-          <table className="w-full">
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[500px]">
             <thead className="bg-slate-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -122,8 +122,8 @@ export default function RecentItemsTabs({
           </table>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200">
-          <table className="w-full">
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[500px]">
             <thead className="bg-slate-50">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
