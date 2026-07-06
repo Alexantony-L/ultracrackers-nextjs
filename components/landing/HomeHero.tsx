@@ -24,20 +24,17 @@ const HomeHero: React.FC = () => {
         {/* Right: text */}
         <AnimatedReveal direction="right" className="text-center md:text-center">
           <p className="text-sm font-medium text-gray-500">Welcome To</p>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
+          <h1 className="mt-2 text-3xl font-bold text-[#4361EE]
+ sm:text-4xl">
             Ultra Crackers 
           </h1>
           <p className="mt-3 text-sm font-bold uppercase tracking-wide text-gray-800">
-            We Have The Glory Begining In Fireworks Business
+           Celebrating Every Festival with Quality & Trust
           </p>
           <p className="mt-6 text-sm leading-relaxed text-gray-600">
-             Ultra Crackers has been a well-known Fireworks Store in
-            Sivakasi. What started out as a hobby, has become our passion and
-            we&apos;re delighted to share it with you. we&apos;re committed to
-            offering quality products, unparalleled service and the most
-            competitive prices in town. Great service begins with great
-            people and industry experience, which is why our staff is made up
-            of the best and most qualified in the business.
+           At <b>Ultra Crackers</b>, we are dedicated to delivering premium-quality fireworks that bring excitement and joy to every celebration. Based in <b>Sivakasi</b>, we offer a wide collection of safe, reliable, and high-performance crackers at competitive prices. With a strong focus on quality, customer satisfaction, and timely delivery, we are committed to making every celebration brighter, safer, and truly unforgettable.
+
+This version sounds more like a modern, premium e-commerce brand while avoiding claims (such as being the "best" or citing a specific history) that may be difficult to verify.
           </p>
         </AnimatedReveal>
       </div>

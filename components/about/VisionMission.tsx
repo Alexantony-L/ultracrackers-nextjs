@@ -12,7 +12,7 @@ const VisionMission: React.FC = () => {
     <section className="w-full bg-white px-4 py-16 sm:px-8">
       <div className="mx-auto max-w-4xl">
         <AnimatedReveal direction="up">
-          <h2 className="text-2xl font-bold text-red-600 sm:text-3xl">
+          <h2 className="text-2xl font-bold text-[#1E3A8A] sm:text-3xl">
             Our Vision &amp; Mission
           </h2>
           <div className="mt-4 space-y-4 text-sm leading-relaxed text-gray-700">

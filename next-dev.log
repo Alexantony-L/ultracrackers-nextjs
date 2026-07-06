@@ -1,0 +1,9 @@
+
+> ultracrackers@0.1.0 dev
+> next dev -p 3000
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.35:3000
+- Environments: .env
+✓ Ready in 1941ms

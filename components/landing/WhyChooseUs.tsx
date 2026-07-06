@@ -11,26 +11,29 @@ import AnimatedReveal from "./AnimatedReveal";
 const FEATURES = [
   {
     icon: Puzzle,
-    title: "Quality",
-    description: "Quality & innovation are the key behind our success",
+    title: "Premium Quality",
+    description:
+      "Every firework is carefully selected to deliver vibrant displays, consistent performance, and an unforgettable festive experience.",
   },
   {
     icon: Wand2,
     title: "Safe to Use",
-    description: "Crackers we offer are safe & are made from fine quality raw materials",
+    description:
+      "We source our fireworks from trusted Sivakasi manufacturers who follow strict quality and safety standards for reliable celebrations.",
   },
   {
     icon: Tag,
-    title: "Genuine Price",
-    description: "Quality products at economic price is the main motto for us",
+    title: "Best Value Pricing",
+    description:
+      "Enjoy premium-quality crackers at competitive wholesale prices with transparent pricing and exceptional value for every purchase.",
   },
   {
     icon: HeartHandshake,
     title: "Customer Satisfaction",
-    description: "Our quality and timely delivery has attracted customers easily",
+    description:
+      "We are committed to delivering quality products, prompt service, and on-time delivery to ensure every customer enjoys a hassle-free shopping experience.",
   },
 ];
-
 const WhyChooseUs: React.FC = () => {
   return (
     <section className="w-full overflow-hidden bg-white px-4 py-16 sm:px-8">
@@ -38,14 +41,10 @@ const WhyChooseUs: React.FC = () => {
         {/* Left: heading + text */}
         <AnimatedReveal direction="left">
           <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-            Why <span className="text-red-600">Choose Us</span>
+            Why <span className="text-[#4361EE]">Choose Us</span>
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-gray-700">
-            We have 5+ years of experience in the crackers business. We are
-            the direct dealer of all leading and reputed brands. We provide
-            high-quality crackers at a competitive price. We have wide range
-            of crackers collections for all types of celebrations. We give
-            you quick response with 24/7 support and on-time delivery.
+      At Ultra Crackers, we are committed to making every celebration brighter, safer, and more memorable. With years of experience in the fireworks industry, we bring you a carefully curated collection of premium-quality crackers from trusted manufacturers in Sivakasi. Our focus on quality, affordability, and customer satisfaction has made us a preferred choice for families, retailers, and event organizers
           </p>
         </AnimatedReveal>
 

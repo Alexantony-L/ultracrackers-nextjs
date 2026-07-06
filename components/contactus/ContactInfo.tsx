@@ -1,12 +1,5 @@
 import React from "react";
-import { MapPin, Phone, Mail } from "lucide-react";
-
-/**
- * ContactInfo
- * "CONTACT US" heading followed by a 3-column info grid:
- * Address, Phone, and Connect With Us (email).
- * Each column has a circular outlined icon above bold heading text.
- */
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const CONTACT_DATA = {
   address: {
@@ -23,64 +16,88 @@ const CONTACT_DATA = {
   email: "Ultracrackers2026@gmail.com",
 };
 
-const IconCircle: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-teal-500 text-teal-500">
+const IconBox: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#4361EE] text-white shadow-sm">
     {children}
   </div>
 );
 
 const ContactInfo: React.FC = () => {
   return (
-    <section className="w-full bg-white px-4 py-16 sm:px-8">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="mb-12 text-center text-3xl font-extrabold tracking-wide text-gray-900 sm:text-4xl">
-          CONTACT US
-        </h2>
+    <section className="w-full bg-[#F8FAFF] px-4 py-12 sm:px-8 sm:py-16">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#4361EE]">
+            Contact Us
+          </p>
+          <h2 className="mt-2 text-3xl font-extrabold text-[#1E3A8A] sm:text-4xl">
+            We are here to help with your cracker orders
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base">
+            Reach us by phone, email, or visit our showroom for product details,
+            pricing, and order support.
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 gap-12 text-center sm:grid-cols-3 sm:gap-8">
-          {/* Address */}
-          <div className="flex flex-col items-center gap-4">
-            <IconCircle>
-              <MapPin className="h-6 w-6" />
-            </IconCircle>
-            <h3 className="text-lg font-bold text-gray-900">Address</h3>
-            <div className="space-y-0.5 text-sm text-gray-700">
-              {CONTACT_DATA.address.lines.map((line, idx) => (
-                <p key={idx}>{line}</p>
-              ))}
+        <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <div className="rounded-2xl border border-[#DCE4FF] bg-white p-5 shadow-sm transition hover:border-[#4361EE] hover:shadow-md">
+            <div className="flex items-start gap-4">
+              <IconBox>
+                <MapPin className="h-6 w-6" />
+              </IconBox>
+              <div>
+                <h3 className="text-lg font-extrabold text-[#1E3A8A]">Address</h3>
+                <div className="mt-3 space-y-1 text-sm leading-relaxed text-gray-600">
+                  {CONTACT_DATA.address.lines.map((line) => (
+                    <p key={line}>{line}</p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Phone */}
-          <div className="flex flex-col items-center gap-4">
-            <IconCircle>
-              <Phone className="h-6 w-6" />
-            </IconCircle>
-            <h3 className="text-lg font-bold text-gray-900">Phone</h3>
-            <div className="space-y-0.5 text-sm text-gray-700">
-              {CONTACT_DATA.phones.map((phone, idx) => (
-                <p key={idx}>
-                  Mobile:{" "}
-                  <a href={`tel:${phone.replace(/\s/g, "")}`} className="hover:text-teal-600">
-                    {phone}
-                  </a>
+          <div className="rounded-2xl border border-[#DCE4FF] bg-white p-5 shadow-sm transition hover:border-[#4361EE] hover:shadow-md">
+            <div className="flex items-start gap-4">
+              <IconBox>
+                <Phone className="h-6 w-6" />
+              </IconBox>
+              <div>
+                <h3 className="text-lg font-extrabold text-[#1E3A8A]">Phone</h3>
+                <div className="mt-3 space-y-3 text-sm">
+                  {CONTACT_DATA.phones.map((phone) => (
+                    <a
+                      key={phone}
+                      href={`tel:${phone.replace(/\s/g, "")}`}
+                      className="block rounded-xl border border-[#DCE4FF] bg-[#F8FAFF] px-3 py-2 font-semibold text-gray-700 transition hover:border-[#4361EE] hover:text-[#4361EE]"
+                    >
+                      {phone}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-[#DCE4FF] bg-white p-5 shadow-sm transition hover:border-[#4361EE] hover:shadow-md">
+            <div className="flex items-start gap-4">
+              <IconBox>
+                <Mail className="h-6 w-6" />
+              </IconBox>
+              <div className="min-w-0">
+                <h3 className="text-lg font-extrabold text-[#1E3A8A]">
+                  Connect With Us
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">
+                  Send us your product questions or order details anytime.
                 </p>
-              ))}
+                <a
+                  href={`mailto:${CONTACT_DATA.email}`}
+                  className="mt-3 block break-words rounded-xl border border-[#DCE4FF] bg-[#F8FAFF] px-3 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#4361EE] hover:text-[#4361EE]"
+                >
+                  {CONTACT_DATA.email}
+                </a>
+              </div>
             </div>
-          </div>
-
-          {/* Connect With Us */}
-          <div className="flex flex-col items-center gap-4">
-            <IconCircle>
-              <Mail className="h-6 w-6" />
-            </IconCircle>
-            <h3 className="text-lg font-bold text-gray-900">Connect With Us</h3>
-            <a
-              href={`mailto:${CONTACT_DATA.email}`}
-              className="text-sm text-gray-700 hover:text-teal-600"
-            >
-              {CONTACT_DATA.email}
-            </a>
           </div>
         </div>
       </div>

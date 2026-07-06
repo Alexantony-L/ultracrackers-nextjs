@@ -23,24 +23,15 @@ const AboutIntro: React.FC = () => {
 
         {/* Right: text */}
         <AnimatedReveal direction="right">
-          <h2 className="text-3xl font-semibold text-gray-800 sm:text-4xl">About</h2>
-          <h1 className="mt-1 text-3xl font-bold text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-semibold text-[#1E3A8A] sm:text-4xl">About</h2>
+          <h1 className="mt-1 text-3xl font-bold text-[#1E3A8A] sm:text-4xl">
             Ultra Crackers 
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-gray-600">
-            This is an outcome of the experience and knowledge we share in
-            the field of selling crackers. We are in the field of selling
-            crackers. since our inception. We have our own exclusive
-            showroom and godown in SIVAKASI. We offer the best quality
-            products at best price. We procure the products well in advance
-            during the best sun drying months of March, April and May to
-            serve the customers with quality products at better price.
+           With years of experience in the fireworks industry, Ultra Crackers has earned the trust of customers by delivering quality, safety, and value. Based in Sivakasi, the heart of India's fireworks manufacturing, we operate with our own showroom and warehouse to ensure a wide selection of premium products is always available.
           </p>
           <p className="mt-4 text-sm leading-relaxed text-gray-600">
-            We provide public &amp; private display shows for marriages,
-            parties, gala events, product launches, temple festivals and
-            award functions and sports nights. One can buy crackers from us
-            round the year.
+        We carefully source our fireworks during the ideal production season to maintain the highest quality standards while offering competitive wholesale prices. Whether you're celebrating Diwali, a wedding, a birthday, a corporate event, a temple festival, or any special occasion, we provide fireworks that create unforgettable moments. Our commitment to quality, affordable pricing, and reliable year-round service makes Ultra Crackers your trusted destination for festive celebrations.
           </p>
         </AnimatedReveal>
       </div>

@@ -22,8 +22,8 @@ const CrackersShopGallery: React.FC = () => {
     <section className="w-full overflow-hidden bg-white px-4 py-16 sm:px-8">
       <div className="mx-auto max-w-6xl">
         <AnimatedReveal direction="up" className="text-center">
-          <h2 className="text-2xl font-bold text-red-600 sm:text-3xl">
-            Our Crackers Shop
+          <h2 className="text-2xl font-bold text-[#4361EE] sm:text-3xl">
+            Our Cracker Shop
           </h2>
         </AnimatedReveal>
 

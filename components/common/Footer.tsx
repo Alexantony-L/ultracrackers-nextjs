@@ -1,119 +1,146 @@
 import React from "react";
 import Image from "next/image";
-import { MessageCircle, Phone, Mail } from "lucide-react";
-
-/**
- * Footer
- * Four-column footer: Seal image + showroom address, Contact Us
- * (WhatsApp / Mobile / Email), Quick Links button grid, and a
- * Google Maps embed under "Reach Us". Copyright bar runs along the bottom.
- *
- * NOTE: Replace `SEAL_IMAGE_SRC` and `MAP_EMBED_SRC` with your actual
- * seal image path and Google Maps embed URL.
- */
+import Link from "next/link";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 
 const SEAL_IMAGE_SRC = "/ultrcrackers_logo.png";
 
-
-const MAP_LINK ="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3936.3746129466126!2d77.90764997502328!3d9.388481090687863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMjMnMTguNSJOIDc3wrA1NCczNi44IkU!5e0!3m2!1sen!2sin!4v1783230369768!5m2!1sen!2sin"
-
+const MAP_LINK =
+  "https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3936.3746129466126!2d77.90764997502328!3d9.388481090687863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMjMnMTguNSJOIDc3wrA1NCczNi44IkU!5e0!3m2!1sen!2sin!4v1783230369768!5m2!1sen!2sin";
 
 const QUICK_LINKS = [
   { label: "Home", href: "/home" },
   { label: "About Ultra Crackers", href: "/about" },
-  // { label: "Fire Crackers", href: "/fire-crackers" },
-  // { label: "Fireworks Gift Box", href: "/gift-box" },
-  // { label: "Price List", href: "/price-list" },
-  { label: "Quick Purchase", href: "/quick-order" },
-  { label: "Contact us", href: "/contact" },
+  { label: "Crackers", href: "/crackers" },
+  { label: "Contact Us", href: "/contactus" },
+  { label: "Safety Tips", href: "/safetytips" },
 ];
 
 const SafetyFooter: React.FC = () => {
   return (
-    <footer className="w-full bg-gray-100">
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 py-12 sm:px-8 md:grid-cols-4 md:gap-8">
-        {/* Column 1: Seal + Showroom */}
-        <div>
-          <Image
-            src={SEAL_IMAGE_SRC}
-            alt="Seal of Trust - Celebrity Crackers Original"
-            width={110}
-            height={110}
-            className="h-24 w-24 object-contain"
-          />
-          <h3 className="mt-4 text-lg font-bold text-[#f8ab13]">Our Showroom</h3>
-          <p className="mt-2 text-sm leading-relaxed text-gray-700 lowercase">
-            door no: 2/229 plot no 1008
-survey no: 228/30
-village e.muthu linga puram
-taluk sattur
-district virudhunagar
-          </p>
-        </div>
-
-        {/* Column 2: Contact Us */}
-        <div>
-          <h3 className="text-lg font-bold text-gray-900">Contact Us</h3>
-
-          <div className="mt-4">
-            <h4 className="font-semibold text-[#f8ab13]">Whats App</h4>
-            <a
-              href="https://wa.me/918668130949"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-1 flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600"
-            >
-              <MessageCircle className="h-4 w-4" />
-              +91 8668130949
-            </a>
+    <footer className="w-full bg-[#F8FAFF] text-gray-700">
+      <div className="border-t border-[#DCE4FF] bg-white">
+        <div className="mx-auto grid max-w-7xl gap-4 px-4 py-6 sm:grid-cols-3 sm:px-8">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#DCE4FF] bg-[#F8FAFF] p-4">
+            <Phone className="h-5 w-5 shrink-0 text-[#4361EE]" />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Call Us
+              </p>
+              <a href="tel:+918668130949" className="font-bold text-[#1E3A8A]">
+                +91 8668130949
+              </a>
+            </div>
           </div>
 
-          <div className="mt-4">
-            <h4 className="font-semibold text-[#f8ab13]">Mobile</h4>
-            <a
-              href="tel:+918668130949"
-              className="mt-1 flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600"
-            >
-              <Phone className="h-4 w-4" />
-              +91 8668130949
-            </a>
-          </div>
-
-          <div className="mt-4">
-            <h4 className="font-semibold text-[#f8ab13]">Email</h4>
-            <a
-              href="mailto:Ultracrackers2026@gmail.com"
-              className="mt-1 flex items-center gap-2 text-sm text-gray-700 hover:text-teal-600"
-            >
-              <Mail className="h-4 w-4" />
-              Ultracrackers2026@gmail.com
-            </a>
-          </div>
-        </div>
-
-        {/* Column 3: Quick Links */}
-        <div>
-          <h3 className="text-lg font-bold text-gray-900">Quick Links</h3>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {QUICK_LINKS.map((link) => (
+          <div className="flex items-center gap-3 rounded-2xl border border-[#DCE4FF] bg-[#F8FAFF] p-4">
+            <MessageCircle className="h-5 w-5 shrink-0 text-[#4361EE]" />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                WhatsApp
+              </p>
               <a
+                href="https://wa.me/918668130949"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-[#1E3A8A]"
+              >
+                Quick Support
+              </a>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 rounded-2xl border border-[#DCE4FF] bg-[#F8FAFF] p-4">
+            <Mail className="h-5 w-5 shrink-0 text-[#4361EE]" />
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                Email
+              </p>
+              <a
+                href="mailto:Ultracrackers2026@gmail.com"
+                className="break-words font-bold text-[#1E3A8A]"
+              >
+                Ultracrackers2026@gmail.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 sm:px-8 lg:grid-cols-[1.15fr_0.85fr_1.2fr]">
+        <div>
+          <div className="flex items-center gap-4">
+            <Image
+              src={SEAL_IMAGE_SRC}
+              alt="Ultra Crackers logo"
+              width={90}
+              height={90}
+              className="h-20 w-20 object-contain"
+            />
+            <div>
+              <h3 className="text-2xl font-extrabold text-[#1E3A8A]">
+                Ultra Crackers
+              </h3>
+              <p className="text-sm font-medium text-[#4361EE]">
+                Premium quality fireworks at wholesale prices
+              </p>
+            </div>
+          </div>
+
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-gray-600">
+            Celebrate safely with quality crackers, friendly service, and a
+            simple purchase experience from Ultra Crackers.
+          </p>
+
+          <div className="mt-5 flex items-start gap-3 rounded-2xl border border-[#DCE4FF] bg-white p-4">
+            <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#4361EE]" />
+            <div>
+              <h4 className="font-bold text-[#1E3A8A]">Our Showroom</h4>
+              <p className="mt-1 text-sm leading-relaxed text-gray-600">
+                Door No: 2/229, Plot No: 1008, Survey No: 228/30, E. Muthu
+                Linga Puram Village, Sattur Taluk, Virudhunagar District.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-extrabold text-[#1E3A8A]">Quick Links</h3>
+          <div className="mt-4 grid gap-3">
+            {QUICK_LINKS.map((link) => (
+              <Link
                 key={link.label}
                 href={link.href}
-                className="rounded bg-[#f8ab13] px-3 py-2 text-xs font-medium text-white transition hover:bg-[#d98c00]"
+                className="rounded-xl border border-[#DCE4FF] bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:border-[#4361EE] hover:text-[#4361EE] hover:shadow-sm"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
 
-        {/* Column 4: Reach Us (Map) */}
         <div>
-          <h3 className="text-lg font-bold text-gray-900">Reach Us</h3>
-          <div className="relative mt-4 h-48 w-full overflow-hidden rounded shadow-sm">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-extrabold text-[#1E3A8A]">Reach Us</h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Visit our showroom or open the location in Google Maps.
+              </p>
+            </div>
+            {/* <a
+              href={MAP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 rounded-full bg-[#4361EE] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#1E3A8A]"
+            >
+              Open Map
+            </a> */}
+          </div>
+
+          <div className="relative mt-4 h-64 w-full overflow-hidden rounded-2xl border border-[#DCE4FF] bg-white shadow-sm">
             <iframe
               src={MAP_LINK}
-              title="Celebrity Crackers Location"
+              title="Ultra Crackers Location"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -122,22 +149,14 @@ district virudhunagar
               className="absolute inset-0 h-full w-full"
             />
           </div>
-          <a
-            href={MAP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-block text-sm font-medium text-blue-600 hover:underline"
-          >
-            Open in Maps ↗
-          </a>
         </div>
       </div>
 
-      {/* Copyright bar */}
-      <div className="border-t border-gray-200 py-4">
-       <div className="flex flex-col items-center gap-1 sm:flex-row sm:justify-center sm:gap-2">
-        <p>© {new Date().getFullYear()} Ultra Crackers. All Rights Reserved.</p>
-      </div>
+      <div className="border-t border-white/20 bg-[#4361EE] py-4">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 text-center text-sm text-white sm:flex-row sm:px-8">
+          <p>© {new Date().getFullYear()} Ultra Crackers. All Rights Reserved.</p>
+          <p className="font-medium text-white/85">Safe celebrations start here.</p>
+        </div>
       </div>
     </footer>
   );

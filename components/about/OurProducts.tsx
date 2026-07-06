@@ -59,15 +59,9 @@ const OurProducts: React.FC= () => {
 
       <div className="relative mx-auto max-w-6xl">
         <AnimatedReveal direction="up" className="text-center">
-          <h2 className="text-3xl font-bold text-red-700 sm:text-4xl">Our Products</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-black">
-            Our motto is to make every festival celebration bright and safe.
-            This, we bring out with our wide range of firecrackers. With over
-            200 varieties of crackers developed and marketed every year, we
-            are among the most sought brands in the Sivakasi region and
-            around the country. Our products are known for their safety and
-            we take great efforts to ensure that all our orders are
-            delivered in a standard time frame with an economical pricing.
+          <h2 className="text-3xl font-bold text-[#1E3A8A] sm:text-4xl">Our Products</h2>
+          <p className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-gray-700">
+       At <b>Ultra Crackers</b>, we believe every celebration deserves to be bright, joyful, and safe. We offer a wide collection of premium-quality fireworks sourced from trusted manufacturers in Sivakasi. From classic favorites to the latest festive collections, every product is carefully selected to ensure safety, vibrant performance, and excellent value. With competitive pricing, reliable service, and timely delivery, we are committed to making your celebrations memorable.
           </p>
         </AnimatedReveal>
 

@@ -68,7 +68,7 @@ const SafetyTipsContent: React.FC = () => {
     <section className="w-full bg-white px-4 py-16 sm:px-8">
       <div className="mx-auto max-w-5xl">
         {/* Intro */}
-        <h2 className="text-2xl font-bold text-red-600 sm:text-3xl">
+        <h2 className="text-2xl font-bold text-[#1E3A8A] sm:text-3xl">
          Ultra Crackers 
         </h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-700">

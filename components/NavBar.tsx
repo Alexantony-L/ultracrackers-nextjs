@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 /**
  * NavBar
@@ -28,11 +29,33 @@ import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Home", href: "/home", isDefault: true, isQuickOrder: true },
-  { label: "Products", href: "/products" },
+  { label: "Crackers", href: "/crackers" },
   { label: "About", href: "/about" },
   { label: "Safety Tips", href: "/safetytips" },
   { label: "Contact", href: "/contactus" },
 ];
+
+const BrandLogo = ({ isMobile = false }: { isMobile?: boolean }) => (
+  <Link href="/home" className="flex shrink-0 items-center gap-3">
+    <Image
+      src="/ultrcrackers_logo.png"
+      alt="Ultra Crackers"
+      width={isMobile ? 76 : 58}
+      height={isMobile ? 76 : 58}
+      priority
+      className={`${isMobile ? "h-16 w-16" : "h-12 w-12"} rounded-lg object-contain`}
+    />
+
+    <div className={isMobile ? "hidden" : "hidden lg:block"}>
+      <h1 className="text-lg font-bold tracking-wide text-white">
+        Ultra Crackers
+      </h1>
+      <p className="text-xs text-white/80">
+        Premium Fireworks
+      </p>
+    </div>
+  </Link>
+);
 
 const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,11 +75,6 @@ const NavBar: React.FC = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Close the mobile menu automatically whenever the route changes
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
-
   const isActive = (href: string, isDefault = false) => {
     if (pathname === href) {
       return true;
@@ -73,55 +91,52 @@ const NavBar: React.FC = () => {
     const active = isActive(href, isDefault);
 
     if (active) {
-      return "rounded-full bg-white px-4 py-2 font-serif text-teal-600 shadow-sm transition";
+      return "rounded-full bg-white px-4 py-2 font-serif text-[#4361EE] shadow-sm transition";
     }
 
     return "rounded-full px-4 py-2 font-serif text-white/90 transition hover:bg-white/15 hover:text-white";
   };
 
   return (
-    <nav ref={navRef} className="w-full bg-teal-500">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:justify-center sm:gap-10 sm:px-8">
-        {/* Mobile: CTA + hamburger toggle */}
+    <nav ref={navRef} className="relative z-50 w-full bg-[#4361EE]">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-8">
+        {/* Mobile: logo + hamburger toggle */}
+
         <div className="flex w-full items-center justify-between sm:hidden">
-          {/* <Link
-            href="/quick-order"
-            className={`rounded-full px-5 py-2 font-serif shadow-sm transition hover:bg-teal-50 active:scale-95 ${
-              isActive("/quick-order", true)
-                ? "bg-white text-teal-600"
-                : "bg-white/90 text-teal-600"
-            }`}
-          >
-            Quick Order
-          </Link> */}
+          <BrandLogo isMobile />
+
           <button
             type="button"
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Toggle navigation menu"
             aria-expanded={isOpen}
-            className="text-white transition active:scale-90"
+            className="rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20 active:scale-90"
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
           </button>
         </div>
 
         {/* Desktop nav */}
-        <div className="hidden items-center gap-10 sm:flex">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className={getLinkClasses(link.href, link.isDefault)}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <div className="hidden w-full items-center justify-between gap-8 sm:flex">
+          <BrandLogo />
+
+          <div className="flex items-center gap-6 lg:gap-10">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={getLinkClasses(link.href, link.isDefault)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Mobile dropdown */}
       {isOpen && (
-        <div className="flex flex-col items-center gap-4 border-t border-teal-400 bg-teal-500 px-4 py-4 sm:hidden">
+        <div className="absolute left-0 top-full z-50 flex w-full flex-col items-center gap-3 border-t border-white/20 bg-[#4361EE] px-4 py-4 shadow-2xl sm:hidden">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.label}

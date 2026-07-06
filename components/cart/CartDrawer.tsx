@@ -49,10 +49,14 @@ const CartDrawer: React.FC = () => {
 
   if (!isOpen) return null;
 
-  const discountTotal = 0;
+  const mrpTotal = items.reduce(
+    (sum, item) => sum + (item.mrp ?? item.price) * item.quantity,
+    0
+  );
+  const discountTotal = Math.max(0, mrpTotal - subtotal);
   const packingChargePercent = 0;
   const packingCharge = Number(((subtotal * packingChargePercent) / 100).toFixed(2));
-  const netRate = subtotal - discountTotal;
+  const netRate = subtotal;
   const overallTotal = netRate + packingCharge;
   const belowMinimum = overallTotal < MINIMUM_ORDER && items.length > 0;
 
@@ -158,7 +162,7 @@ const CartDrawer: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-gray-900">Ultra Crackers</h2>
             <p className="mt-1 text-xs leading-relaxed text-gray-500">
-              door no: 2/229 plot no 1008 , survey no: 228/30
+              Door no: 2/229 plot no 1008 , survey no: 228/30
               village e.muthu linga puram ,taluk sattur
               district virudhunagar
             </p>
@@ -174,16 +178,16 @@ const CartDrawer: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2 px-6 py-3 text-xs font-medium text-gray-500">
-          <span className={step === "review" ? "text-teal-600" : ""}>1. Review</span>
+          <span className={step === "review" ? "text-[#4361EE]" : ""}>1. Review</span>
           <span className="h-px flex-1 bg-gray-200" />
-          <span className={step === "details" ? "text-teal-600" : ""}>2. Details</span>
+          <span className={step === "details" ? "text-[#4361EE]" : ""}>2. Details</span>
         </div>
 
         <div className="relative flex-1 overflow-y-auto px-6 pb-6">
           {showSuccess && (
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/95 px-4">
-              <div className="w-full max-w-sm rounded-2xl border border-teal-100 bg-white p-6 text-center shadow-xl">
-                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-teal-100 text-teal-600">
+              <div className="w-full max-w-sm rounded-2xl border border-[#DCE4FF] bg-white p-6 text-center shadow-xl">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#F8FAFF] text-[#4361EE]">
                   <CheckCircle2 className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">Order placed successfully</h3>
@@ -193,7 +197,7 @@ const CartDrawer: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleClose}
-                  className="mt-5 w-full rounded-md bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-700"
+                  className="mt-5 w-full rounded-md bg-[#4361EE] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#1E3A8A]"
                 >
                   Close
                 </button>
@@ -382,7 +386,7 @@ const CartDrawer: React.FC = () => {
                 type="button"
                 disabled={items.length === 0}
                 onClick={() => setStep("details")}
-                className="w-full rounded-md bg-teal-600 py-3 text-sm font-semibold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                className="w-full rounded-md bg-[#4361EE] py-3 text-sm font-semibold text-white transition hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-gray-300"
               >
                 Continue Estimate
               </button>
@@ -401,7 +405,7 @@ const CartDrawer: React.FC = () => {
                 type="button"
                 disabled={belowMinimum || isSubmitting}
                 onClick={handleSubmit}
-                className="flex-1 rounded-md bg-teal-600 py-3 text-sm font-semibold text-white transition hover:bg-teal-700 disabled:cursor-not-allowed disabled:bg-gray-300"
+                className="flex-1 rounded-md bg-[#4361EE] py-3 text-sm font-semibold text-white transition hover:bg-[#1E3A8A] disabled:cursor-not-allowed disabled:bg-gray-300"
               >
                 {isSubmitting ? "Placing Order..." : "Place Order"}
               </button>
@@ -421,8 +425,8 @@ const CartDrawer: React.FC = () => {
         }
         .input:focus {
           outline: none;
-          border-color: #0d9488;
-          box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.15);
+          border-color: #4361ee;
+          box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
         }
       `}</style>
     </div>
