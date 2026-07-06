@@ -28,8 +28,8 @@ import Image from "next/image";
  */
 
 const NAV_LINKS = [
-  { label: "Home", href: "/home", isDefault: true, isQuickOrder: true },
-  { label: "Crackers", href: "/crackers" },
+  { label: "Home", href: "/home" },
+  { label: "Crackers", href: "/crackers", isDefault: true, isQuickOrder: true },
   { label: "About", href: "/about" },
   { label: "Safety Tips", href: "/safetytips" },
   { label: "Contact", href: "/contactus" },

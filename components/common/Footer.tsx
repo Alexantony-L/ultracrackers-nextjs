@@ -57,10 +57,10 @@ const SafetyFooter: React.FC = () => {
                 Email
               </p>
               <a
-                href="mailto:Ultracrackers2026@gmail.com"
+                href="mailto:support@ultracrackers.com"
                 className="break-words font-bold text-[#1E3A8A]"
               >
-                Ultracrackers2026@gmail.com
+                support@ultracrackers.com
               </a>
             </div>
           </div>

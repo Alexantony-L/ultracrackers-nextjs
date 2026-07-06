@@ -13,7 +13,7 @@ const CONTACT_DATA = {
     ],
   },
   phones: ["+91 9360528398", "+91 8526230861"],
-  email: "Ultracrackers2026@gmail.com",
+  email: "support@ultracrackers.com",
 };
 
 const IconBox: React.FC<{ children: React.ReactNode }> = ({ children }) => (

@@ -14,7 +14,7 @@ import AnimatedReveal from "./AnimatedReveal";
  */
 
 const STICKS_IMAGE_SRC = "/dummy.webp"; // <-- update this path
-const BUNDLE_IMAGE_SRC = "/dummy.webp"; // <-- update this path
+const BUNDLE_IMAGE_SRC = "/crackers_minimal.png"; // <-- update this path
 
 const FireworksOutlet: React.FC = () => {
   return (
@@ -22,16 +22,16 @@ const FireworksOutlet: React.FC = () => {
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
         {/* Left: text */}
         <AnimatedReveal direction="left">
-      <h2 className="text-2xl font-bold text-[#4361EE] sm:text-3xl">
-  Premium Fireworks from Sivakasi
-</h2>
+          <h2 className="text-2xl font-bold text-[#4361EE] sm:text-3xl">
+            Premium Fireworks from Sivakasi
+          </h2>
 
-<p className="mt-4 text-base leading-8 text-gray-600">
-  Experience the joy of celebrations with our carefully curated collection
-  of premium fireworks. We are committed to delivering quality, safety, and
-  exceptional value through a wide selection of crackers for families,
-  retailers, and festive events across India.
-</p>
+          <p className="mt-4 text-base leading-8 text-gray-600">
+            Experience the joy of celebrations with our carefully curated collection
+            of premium fireworks. We are committed to delivering quality, safety, and
+            exceptional value through a wide selection of crackers for families,
+            retailers, and festive events across India.
+          </p>
           {/* <Link
             href="/quick-order"
             className="mt-4 inline-block text-sm font-semibold text-blue-600 hover:underline"
