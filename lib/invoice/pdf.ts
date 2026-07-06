@@ -73,40 +73,86 @@ async function launchBrowser(): Promise<Browser> {
   return localBrowser as unknown as Browser;
 }
  
-export async function generatePdf(html: string, fileName: string) {
+// export async function generatePdf(html: string, fileName: string) {
+//   const browser = await launchBrowser();
+ 
+//   let pdf: Buffer;
+ 
+//   try {
+//     const page = await browser.newPage();
+//     await page.setContent(html, { waitUntil: "load" });
+ 
+//     const pdfBytes = await page.pdf({
+//       format: "A4",
+//       printBackground: true,
+//     });
+ 
+//     pdf = Buffer.from(pdfBytes);
+//   } finally {
+//     await browser.close();
+//   }
+ 
+//   const invoiceDir = path.join(process.cwd(), "public", "invoices");
+ 
+//   // Create folder if it doesn't exist
+//   await fs.mkdir(invoiceDir, {
+//     recursive: true,
+//   });
+ 
+//   const filePath = path.join(invoiceDir, `${fileName}.pdf`);
+ 
+//   await fs.writeFile(filePath, pdf);
+ 
+//   return {
+//     pdfBuffer: pdf,
+//     filePath,
+//     publicUrl: `/invoices/${fileName}.pdf`,
+//   };
+// }
+ 
+
+
+export async function generatePdf(
+  html: string,
+  fileName: string
+) {
   const browser = await launchBrowser();
- 
+
   let pdf: Buffer;
- 
+
   try {
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load" });
- 
+
+    await page.setContent(html, {
+      waitUntil: "load",
+    });
+
     const pdfBytes = await page.pdf({
       format: "A4",
       printBackground: true,
     });
- 
+
     pdf = Buffer.from(pdfBytes);
   } finally {
     await browser.close();
   }
- 
-  const invoiceDir = path.join(process.cwd(), "public", "invoices");
- 
-  // Create folder if it doesn't exist
-  await fs.mkdir(invoiceDir, {
-    recursive: true,
-  });
- 
-  const filePath = path.join(invoiceDir, `${fileName}.pdf`);
- 
-  await fs.writeFile(filePath, pdf);
- 
+
+  // Upload to Vercel Blob
+  const blob = await put(
+    `invoices/${fileName}.pdf`,
+    pdf,
+    {
+      access: "public",
+      addRandomSuffix: false,
+      contentType: "application/pdf",
+    }
+  );
+// console.log(blob.url,
+//     blob.downloadUrl,)
   return {
     pdfBuffer: pdf,
-    filePath,
-    publicUrl: `/invoices/${fileName}.pdf`,
+    publicUrl: blob.url,
+    downloadUrl: blob.downloadUrl,
+    pathname: blob.pathname,
   };
 }
- 
