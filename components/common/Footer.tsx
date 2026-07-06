@@ -27,8 +27,8 @@ const SafetyFooter: React.FC = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
                 Call Us
               </p>
-              <a href="tel:+918668130949" className="font-bold text-[#1E3A8A]">
-                +91 8668130949
+              <a href="tel:+918526230861" className="font-bold text-[#1E3A8A]">
+                +91 8526230861
               </a>
             </div>
           </div>
@@ -40,7 +40,7 @@ const SafetyFooter: React.FC = () => {
                 WhatsApp
               </p>
               <a
-                href="https://wa.me/918668130949"
+                href="https://wa.me/9360528398"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-bold text-[#1E3A8A]"
