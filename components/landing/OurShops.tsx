@@ -11,7 +11,7 @@ import AnimatedReveal from "./AnimatedReveal";
  */
 
 const SHOP_IMAGES = [
-  "/shop5.jfif", // <-- update this path
+  "/shop5.jpg", // <-- update this path
   "/shop6.webp", // <-- update this path
   "/shop7.jpg", // <-- update this path
   "/shop9.webp", // <-- update this path
