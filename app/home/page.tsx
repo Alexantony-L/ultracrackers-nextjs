@@ -4,6 +4,7 @@ import FeatureShowcase from "@/components/landing/FeatureShowcase";
 import FireworksOutlet from "@/components/landing/FireworksOutlet";
 import WhyChooseUltraCrackers from "@/components/landing/CrackersShopGallery";
 import SafetyFooter from "@/components/common/Footer";
+import OurShop from "@/components/landing/OurShops";
 
 
 
@@ -15,6 +16,7 @@ export default function HomePage() {
       <FeatureShowcase />
       <FireworksOutlet />
       <WhyChooseUltraCrackers />
+      <OurShop/>
       <SafetyFooter />
 
     </>
